@@ -1,0 +1,27 @@
+<div class="main-page" [ngClass]="{'dark' : theme === 'dark', 'pink' : theme === 'pink', 'light' : theme === 'light'}">
+    <nav>
+        <header>
+            <ms-logo></ms-logo>
+            
+        </header>
+        <div class="main-page-history">History</div>
+        <div class="main-page-library">Library:</div>
+    </nav>
+    <section>
+        <header>
+            <div></div>
+            <input type="text" class="search" placeholder="Search...">
+            <div class="theme">
+                THEMES: 
+                <span *ngIf="theme!=='dark'" class="theme-dark" (click)="changeTheme('dark')">DARK </span>
+                <span *ngIf="theme!=='light'" class="theme-light" (click)="changeTheme('light')">LIGHT </span>
+                <span *ngIf="theme!=='pink'" class="theme-pink" (click)="changeTheme('pink')">PINK </span>
+            </div>
+        </header>
+        <section class="music-list">
+        <!-- <section class="music-list" *ngFor="let music of musics"> -->
+            <ms-music></ms-music>
+            <ms-music></ms-music>
+        </section>
+    </section>
+</div>

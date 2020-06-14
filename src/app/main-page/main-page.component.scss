@@ -1,0 +1,78 @@
+.main-page {
+    color: var(--color);
+    background: var(--bg-linear);
+    display: flex;
+    height: 100vh;
+
+    & nav {
+        background-color: var(--bg2);
+        display: flex;
+        flex-direction: column;
+        padding: 10px;
+
+        & header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+    }
+
+    & section {
+        width: 100%;
+        overflow: auto;
+        padding: 10px;
+
+        & header {
+            position: sticky;
+            top: 0;
+            display: flex;
+            justify-content: space-between;
+
+            & .search {
+                padding: 5px;
+                border-radius: calc(25px / 2);
+            }
+
+            & .theme {
+                cursor: pointer;
+                user-select: none;
+        
+                &-dark {
+                    color: var(--bg-dark);
+                }
+                &-light {
+                    color: var(--bg-light);
+                }
+                &-pink {
+                    color: var(--bg-pink);
+                }
+            }
+        }
+
+        & .music-list {
+            display: flex;
+            flex-direction: column;
+        }
+    }
+}
+
+.dark {
+    --bg1: var(--bg-dark);
+    --bg2: black;
+    --color: var(--color-dark);
+    --bg-linear: linear-gradient(to right, var(--bg-dark2), var(--bg1));
+}
+
+.light {
+    --bg1: var(--bg-light);
+    --bg2: white;
+    --color: var(--color-light);
+    --bg-linear: linear-gradient(to right, var(--bg-light2), var(--bg1));
+}
+
+.pink {
+    --bg1: var(--bg-pink);
+    --bg2: white;
+    --color: var(--color-pink);
+    --bg-linear: linear-gradient(to right, var(--bg-pink2), var(--bg1));
+}

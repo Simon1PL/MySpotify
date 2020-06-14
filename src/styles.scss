@@ -1,0 +1,27 @@
+/* You can add global styles to this file, and also import other style files */
+:root {
+    --main-color: rgb(236, 0, 79);
+    --color-dark: white;
+    --bg-dark: rgb(56, 56, 56);
+    --bg-dark2: rgb(126, 126, 126);
+    --color-light: black;
+    --bg-light: rgb(243, 237, 240);
+    --bg-light2: rgb(231, 180, 197);
+    --color-pink: black;
+    --bg-pink: rgb(233, 76, 128);
+    --bg-pink2: rgb(235, 109, 151);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: inherit;
+    outline: none;
+    text-decoration: none;
+    border: none;
+}
+
+body {
+    box-sizing: border-box;
+    font-size: 18px;
+}
