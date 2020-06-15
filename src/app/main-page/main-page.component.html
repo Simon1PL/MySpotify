@@ -1,21 +1,19 @@
 <div class="main-page" [ngClass]="{'dark' : theme === 'dark', 'pink' : theme === 'pink', 'light' : theme === 'light'}">
     <nav>
         <header>
-            <ms-logo></ms-logo>
-            
+            <ms-logo></ms-logo>  
         </header>
         <div class="main-page-history">History</div>
         <div class="main-page-library">Library:</div>
     </nav>
     <section>
         <header>
-            <div></div>
             <input type="text" class="search" placeholder="Search...">
             <div class="theme">
-                THEMES: 
-                <span *ngIf="theme!=='dark'" class="theme-dark" (click)="changeTheme('dark')">DARK </span>
-                <span *ngIf="theme!=='light'" class="theme-light" (click)="changeTheme('light')">LIGHT </span>
-                <span *ngIf="theme!=='pink'" class="theme-pink" (click)="changeTheme('pink')">PINK </span>
+                <span>CHANGE THEME:</span>
+                <div *ngIf="theme!=='dark'" class="theme-dark theme-square" (click)="changeTheme('dark')"></div>
+                <div *ngIf="theme!=='light'" class="theme-light theme-square" (click)="changeTheme('light')"></div>
+                <div *ngIf="theme!=='pink'" class="theme-pink theme-square" (click)="changeTheme('pink')"></div>
             </div>
         </header>
         <section class="music-list">
