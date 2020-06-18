@@ -1,2 +1,9 @@
-<!-- 1. The <iframe> (and video player) will replace this <div> tag. -->
-<div id="player" class="yt-player" ></div>
+<div class="music">
+    <i class="play-button fa" aria-hidden="true" (click)="play()" [ngClass]="{'fa-play': isPlaying==='ended','fa-pause': isPlaying==='playing', 'fa-spinner': isPlaying==='loading'}"></i>
+    <img src={{item.thumbnails}} alt="">
+    <div class="title">{{item.title}}</div>
+    <div class="channel">{{item.channelTitle}}</div>
+    <div class="date">{{item.date | date}}</div>
+    <div class="duration">{{item.duration | duration}}</div>
+    <div class="views">{{item.views | number}}</div>
+</div>

@@ -3,13 +3,14 @@
     background: var(--bg-linear);
     display: flex;
     height: 100vh;
+    width: 100%;
 
     & nav {
         background-color: var(--bg2);
         display: flex;
         flex-direction: column;
-        padding: 10px;
         width: 30%;
+        padding: 10px;
     }
 
     & section {
@@ -24,13 +25,30 @@
             justify-content: space-between;
 
             & .search {
-                padding: 5px 17px;
-                height: 35px;
+                display: flex;
+                align-items: center;
                 width: 50%;
-                border-radius: calc(35px / 2);
                 @media only screen and (max-width: 700px) {
                     width: 100%;
                     margin-right: 17px;
+                }
+                &-input {
+                    width: 100%;
+                    padding: 5px 12px;
+                    height: 35px;
+                    border-radius: calc(35px / 2);
+                }
+                &-icon {
+                    align-items: center;
+                    display: flex;
+                    height: 35px;
+                    padding: 0 10px 0 23px;
+                    border-top-right-radius: calc(35px / 2);
+                    border-bottom-right-radius: calc(35px / 2);
+                    border: solid 2px white;
+                    position: relative;
+                    left: -20px;
+                    z-index: -1;
                 }
             }
 
@@ -67,6 +85,12 @@
             display: flex;
             flex-direction: column;
         }
+
+        & .musicplayer {
+            &-button {
+                color: var(--main-color);
+            }
+        }
     }
 }
 
@@ -89,4 +113,17 @@
     --bg2: white;
     --color: var(--color-pink);
     --bg-linear: linear-gradient(to right, var(--bg-pink2), var(--bg1));
+}
+.pink-background-image {
+    background-size: 100% auto;
+    background-image: url('../../assets/hearths.png');
+}
+
+.yt-player {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: none;
 }
