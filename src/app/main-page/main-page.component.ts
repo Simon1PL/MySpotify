@@ -12,10 +12,11 @@ export class MainPageComponent implements OnInit {
   theme = 'dark';
   actualTime = 0; // used in time measure
   intervalId: any; // used in time measure
-  state: string; // loading/playing/ended (play button icon depends on that)
+  state: string = 'ended'; // loading/playing/ended (play button icon depends on that)
   watchVideo = false; // when true video is visible
-  results: Music[];
-  videoItem: Music; // info about playing/loaded song
+  results: Music[] = [];
+  videoItem: Music = pinkPanter; // info about playing/loaded song
+  playlists: {name: string}[] = [{name: 'impreza1'}, {name: 'rapy2'}, {name: 'hiphop3'}]
 
   constructor(private ytPlayerService: YtPlayerService, private ytSearchService: YtSearchService) { }
 
@@ -28,6 +29,7 @@ export class MainPageComponent implements OnInit {
     });
     this.ytPlayerService.getCurrentlyPlayingVideoItem().subscribe(videoItem => this.videoItem = videoItem);
     this.ytSearchService.getResultList().subscribe(result => this.results = result);
+    setTimeout(() => { this.ytPlayerService.load(pinkPanter); this.play(false); }, 1000);
   }
 
   changeTheme(theme: string) {
@@ -49,7 +51,8 @@ export class MainPageComponent implements OnInit {
     if (play) {
       this.ytPlayerService.play();
       this.startTimer();
-    }
+      console.log(this.videoItem.thumbnails);
+  }
     else {
       this.ytPlayerService.stop();
       this.stopTimer();
@@ -88,3 +91,13 @@ export class MainPageComponent implements OnInit {
     } */
 
 }
+
+export const pinkPanter = {
+  title: 'Różowa pantera',
+  videoId: '5H7bNUFGMs0',
+  channelTitle: 'Szpaku',
+  thumbnails: 'https://i.ytimg.com/vi/lk70ee3UMAc/hqdefault.jpg',
+  date: null,
+  duration: 'T2M43S',
+  views: null
+};

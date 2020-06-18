@@ -34,7 +34,7 @@ export class YtSearchService {
   private loadClient() {
     window['gapi'.toString()].client.setApiKey('AIzaSyAyAGXF70GiuS0UmVzSfd-oj2HTaFTl8TY');
     return window['gapi'.toString()].client.load('https://www.googleapis.com/discovery/v1/apis/youtube/v3/rest')
-      .then(() => { console.log('GAPI client loaded for API'); },
+      .then(() => { console.log('GAPI client loaded for API'); console.log('YtSearchService done'); },
         (err) => { console.error('Error loading GAPI client for API', err); });
   }
 

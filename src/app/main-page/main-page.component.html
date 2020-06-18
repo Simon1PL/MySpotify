@@ -3,8 +3,14 @@
         <header>
             <ms-logo></ms-logo>  
         </header>
-        <div class="main-page-history">History</div>
-        <div class="main-page-library">Library:</div>
+        <div class="history">Historia</div>
+        <div class="favorite">Najczęściej odtwarzane</div>
+        <div class="like">Polubione utwory</div>
+        <span class="library">Playlisty:</span>
+        <div class="playlist" *ngFor="let playlist of playlists">{{playlist.name}}</div>
+        <span class="findInSave">Szukaj w zapisanych</span>
+        <input type="text" placeholder="Search...">
+        <button class="icon" (click)="search(input.value);">SZUKAJ <i class="fa fa-search" aria-hidden="true"></i></button>
     </nav>
     <section>
         <header [ngClass]="{'pink-background-image': theme==='pink'}">
@@ -19,15 +25,24 @@
                 <div *ngIf="theme!=='pink'" class="theme-pink theme-square" (click)="changeTheme('pink')"></div>
             </div>
         </header>
-        <section class="musicplayer" *ngIf="videoItem">
-            <div class="musicplayer-title">{{videoItem.title}}</div>
-            <div class="musicplayer-chanel">{{videoItem.channelTitle}}</div>
-            <div class="musicplayer-duration">{{videoItem.duration | duration}}</div>
-            <span class="musicplayer-time">
-                {{actualTime / 60 | number: '2.0-0'}}:{{actualTime % 60 | number: '2.0-0'}}
-            </span>
-            <i class="musicplayer-button fa" aria-hidden="true" (click)="play()" [ngClass]="{'fa-play': state==='ended','fa-pause': state==='playing', 'fa-spinner': state==='loading'}"></i>
-        </section>
+        <section class="musicplayer">
+            <div class="img">
+                <img class="img-thumbnails" src="{{videoItem.thumbnails}}" alt="">
+                <i class="fa fa-video-camera img-camera" aria-hidden="true"></i>
+            </div>
+            <div class="musicplayer-info">
+                <div class="musicplayer-info-title">Tytuł: {{videoItem.title}}</div>
+                <div class="musicplayer-info-chanel">Wykonawca/kanał: {{videoItem.channelTitle}}</div>
+                <div class="musicplayer-info-controller">
+                    <span class="musicplayer-info-controller-time">
+                        {{actualTime / 60 | number: '2.0-0'}}:{{actualTime % 60 | number: '2.0-0'}}
+                    </span>
+                    <i class="musicplayer-info-controller-button fa" aria-hidden="true" (click)="play()" [ngClass]="{'fa-play': state==='ended','fa-pause': state==='playing', 'fa-spinner': state==='loading'}"></i>
+                    <span class="musicplayer-info-controller-duration">{{videoItem.duration | duration}}</span>
+                </div>
+            </div>
+            <i class="fa fa-download" aria-hidden="true"></i>
+            </section>
         <section class="music-list" *ngFor="let item of results">
             <ms-music *ngIf="item" [item]="item" (eventPlay)="play($event)"></ms-music>
         </section>

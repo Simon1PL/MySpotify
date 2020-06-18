@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Subject, Observable } from 'rxjs';
 import { Music } from 'src/app/music';
+import { pinkPanter } from 'src/app/main-page/main-page.component';
 
 @Injectable({
   providedIn: 'root'
@@ -31,7 +32,7 @@ export class YtPlayerService {
       this.state.next({videoId: null, needBuffering: null});
     }
   }
-  // set isVideoBuffering to true if new videoItem is another than last
+  // load video(set isVideoBuffering to true if new videoItem is another than last)
   load(videoItem?) {
     if (this.isPlayerLoaded && videoItem?.videoId !== this.playerVideoId) {
       this.playerVideoId = videoItem.videoId;
@@ -88,6 +89,7 @@ export class YtPlayerService {
   // 4. The API will call this function when the video player is ready.
   private onPlayerReady(event) {
     this.isPlayerLoaded = true;
+    console.log('YtPlayerService done');
   }
   // 5. The API calls this function when the player's state changes like PLAYING, PAUSE, ENDED.
   private onPlayerStateChange(event) {

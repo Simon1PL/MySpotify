@@ -1,6 +1,6 @@
 .main-page {
     --buttons-font-size: 40px;
-    font-size: 1.3rem;
+    font-size: 1em;
     --buttons-height: 40px;
     --buttons-border: var(--main-color) solid 3px;
     color: var(--color);
@@ -13,8 +13,64 @@
         background-color: var(--bg2);
         display: flex;
         flex-direction: column;
-        width: 30%;
+        min-width: 30%;
         padding: 10px;
+        font-size: 1.6em;
+        text-align: center;
+        overflow: auto;
+        & header {
+            margin-bottom: 20px;
+        }
+        & div {
+            border-top: 3px solid var(--color);
+            border-bottom: 3px solid var(--color);
+            background-color: var(--bg1);
+            opacity: 0.7;
+            margin-bottom: 25px;
+            color: var(--main-color);
+            cursor: pointer;
+            user-select: none;
+            font-weight: 700;
+            &:hover {
+                opacity: 1;
+            }
+        }
+        & .library {
+            font-family: var(--font);
+            color: var(--main-color);
+            font-size: 1.8em;
+            margin-bottom: 15px;
+            user-select: none;
+        }
+        & .findInSave {
+            font-family: var(--font);
+            color: var(--main-color);
+            font-size: 1.7em;
+            margin-bottom: 5px;
+            user-select: none;
+        }
+        & input {
+            width: 100%;
+            padding: 5px 12px;
+            height: var(--buttons-height);
+            border-radius: calc(var(--buttons-height) / 2);
+            border: var(--buttons-border)
+        }
+        & .icon {
+            height: var(--buttons-height);
+            padding: 0 20px;
+            border: var(--buttons-border);
+            border-radius: calc(var(--buttons-height) / 2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            margin: 10px auto;
+            color: var(--color);
+            background-color: var(--main-color);
+            font-family: var(--font);
+            font-size: 1em;
+        }
     }
 
     & section {
@@ -36,7 +92,6 @@
                 width: 50%;
                 @media only screen and (max-width: 800px) {
                     width: 100%;
-                    margin-right: 17px;
                 }
                 &-input {
                     width: 100%;
@@ -94,17 +149,67 @@
         }
 
         & .music-list {
-            display: flex;
             flex-direction: column;
+            padding: 20px;
         }
 
         & .musicplayer {
             position: sticky;
+            display: flex;
+            justify-content: space-around;
+            text-align: center;
+            align-items: center;
             top: 80px;
             background-color: var(--bg2);
-            padding: 0 20px 20px;
-            &-button {
-                color: var(--main-color);
+            padding: 20px;
+            font-weight: 700;
+            max-height: 200px;
+            overflow: hidden;
+            & .img {
+                padding: 5px;
+                position: relative;
+                height: 200px;
+                @media only screen and (max-width: 800px) {
+                    display: none;
+                }
+                &-thumbnails {
+                    width: auto;
+                    height: 100%;
+                }
+                &-camera {
+                    height: 80%;
+                    width: 80%;
+                    transform: translate(-50%, -50%);
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    color: white;
+                    z-index: 2;
+                    color: var(--main-color);
+                }
+            }
+            &-info {
+                display: flex;
+                flex-direction: column;
+                justify-content: space-around;
+                &-chanel, &-title {
+                    margin: 10px 0;
+                    @media only screen and (max-width: 800px) {
+                        margin: 0;
+                    }
+                }
+                &-controller {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    margin: 15px 0;
+                    &-button {
+                        color: var(--main-color);
+                        margin: 0 20px 5px;
+                        transform: scale(2);
+                        cursor: pointer;
+                    }
+                }
             }
         }
 
