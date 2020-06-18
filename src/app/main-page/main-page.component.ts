@@ -10,19 +10,21 @@ import { YtSearchService } from 'src/services/yt-search.service';
 })
 export class MainPageComponent implements OnInit {
   theme = 'dark';
-  actualTime = 0;
-  intervalId: any;
-  isPlaying: string; // loading/playing/ended maybe create enum 'playerState' but later:D
-  watchVideo = false;
+  actualTime = 0; // used in time measure
+  intervalId: any; // used in time measure
+  state: string; // loading/playing/ended (play button icon depends on that)
+  watchVideo = false; // when true video is visible
   results: Music[];
-  videoItem: Music;
+  videoItem: Music; // info about playing/loaded song
 
   constructor(private ytPlayerService: YtPlayerService, private ytSearchService: YtSearchService) { }
 
   ngOnInit(): void {
-    this.ytPlayerService.getCurrentlyPlayingVideoId().subscribe(item => {
-      // change isPlaying to true if any song is playing right now otherwise false
-      this.isPlaying = item.videoId === null ? 'ended' : item.state === 1 ? 'playing' : 'loading';
+    this.ytPlayerService.getState().subscribe(item => {
+      // first option: if getState has item with videoId=null this song state=ended[play icon visible]
+      // second: videoId!=null and video needs buffering(state=loading[loading icon visible])
+      // third: doesn't need buffering(state=playing[pause icon visible])
+      this.state = item.videoId === null ? 'ended' : item.needBuffering === false ? 'playing' : 'loading';
     });
     this.ytPlayerService.getCurrentlyPlayingVideoItem().subscribe(videoItem => this.videoItem = videoItem);
     this.ytSearchService.getResultList().subscribe(result => this.results = result);
@@ -43,7 +45,7 @@ export class MainPageComponent implements OnInit {
     clearInterval(this.intervalId);
   }
 
-  play(play = this.isPlaying !== 'playing') { // argument play: true - start playing / false - stop playing
+  play(play = this.state === 'ended') { // argument play: true - start playing / false - stop playing
     if (play) {
       this.ytPlayerService.play();
       this.startTimer();
@@ -54,21 +56,21 @@ export class MainPageComponent implements OnInit {
     }
   }
 
-  load() {
-    this.ytPlayerService.play(true);
-    this.startTimer();
-  }
-
   search(text: string, token = false) {
     this.ytSearchService.search(text, token);
   }
 
-  @HostListener('document:keyup', ['$event'])
+  @HostListener('document:keydown', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent) {
     if (event.key === 'Enter')
     {
       const input = document.getElementById('search');
       this.search((input as HTMLInputElement).value);
+    }
+    if (event.key === ' ')
+    {
+      event.preventDefault();
+      this.play();
     }
   }
 

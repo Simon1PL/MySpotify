@@ -6,40 +6,42 @@ import { Music } from 'src/app/music';
   providedIn: 'root'
 })
 export class YtPlayerService {
+  private isPlayerLoaded = false; // when YT API are loaded this is changing to true
   private player: any;
   private playerVideoId: string;
-  private isPlayerLoaded = false;
-  private isPlaying = new Subject<{videoId: string, state: any}>(); // Observable object
+  // Observable object, videoId=null means object is paused(has play icon visible)
+  private state = new Subject<{videoId: string, needBuffering: boolean}>();
   private videoItemToObserve = new Subject<Music>();
-  private lastStateWasBuffering = false;
+  private isVideoBuffering = false;
 
-  // start or unpause video with given id
-  play(newSong = false) {
+  // start or unpause video
+  play() {
     if (this.isPlayerLoaded) {
       this.player.playVideo();
-      this.isPlaying.next({videoId: this.playerVideoId, state: newSong ? 3 : 1}); // 1 means playing, 3 means buffering
-      if (newSong) { this.lastStateWasBuffering = true; }
+      this.state.next({videoId: this.playerVideoId, needBuffering: this.isVideoBuffering ? true : false});
     }
     else {
       console.log('probably no internet connection');
     }
   }
+  // pause video
   stop() {
     if (this.isPlayerLoaded) {
       this.player.pauseVideo();
-      this.isPlaying.next({videoId: null, state: 2}); // 2 means paused
+      this.state.next({videoId: null, needBuffering: null});
     }
   }
+  // set isVideoBuffering to true if new videoItem is another than last
   load(videoItem?) {
-    const id = videoItem ? videoItem.videoId : this.playerVideoId;
-    if (this.isPlayerLoaded && this.playerVideoId !== id) {
-      this.playerVideoId = id;
+    if (this.isPlayerLoaded && videoItem?.videoId !== this.playerVideoId) {
+      this.playerVideoId = videoItem.videoId;
       this.player.loadVideoById(this.playerVideoId);
-      if (videoItem) { this.videoItemToObserve.next(videoItem); }
+      this.videoItemToObserve.next(videoItem);
+      this.isVideoBuffering = true;
     }
   }
-  getCurrentlyPlayingVideoId(): Observable<{videoId: string, state: any}> {
-    return this.isPlaying.asObservable();
+  getState(): Observable<{videoId: string, needBuffering: boolean}> {
+    return this.state.asObservable();
   }
   getCurrentlyPlayingVideoItem(): Observable<Music> {
     return this.videoItemToObserve.asObservable();
@@ -90,12 +92,12 @@ export class YtPlayerService {
   // 5. The API calls this function when the player's state changes like PLAYING, PAUSE, ENDED.
   private onPlayerStateChange(event) {
     if (event.data === window['YT'.toString()].PlayerState.ENDED) {
-      this.isPlaying.next({videoId: this.playerVideoId, state: window['YT'.toString()].PlayerState.ENDED});
-      this.lastStateWasBuffering = false;
+      this.state.next({videoId: null, needBuffering: null});
+      this.isVideoBuffering = false;
     }
-    else if (this.lastStateWasBuffering && event.data === window['YT'.toString()].PlayerState.PLAYING) {
-      this.isPlaying.next({videoId: this.playerVideoId, state: window['YT'.toString()].PlayerState.PLAYING});
-      this.lastStateWasBuffering = false;
+    else if (this.isVideoBuffering && event.data === window['YT'.toString()].PlayerState.PLAYING) {
+      this.state.next({videoId: this.playerVideoId, needBuffering: false});
+      this.isVideoBuffering = false;
     }
   }
 }

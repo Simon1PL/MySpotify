@@ -12,19 +12,23 @@ export class MusicComponent implements OnInit {
   item: Music;
   @Output()
   eventPlay = new EventEmitter<boolean>();
-  isPlaying = 'ended'; // loading/playing/ended maybe create enum 'playerState' but later:D
+  state = 'ended'; // loading/playing/ended (play button icon depends on that) ENDED=play button PLAYING=pause button LOADING=loading button
 
   constructor(private ytPlayerService: YtPlayerService) { }
 
   ngOnInit(): void {
-    this.ytPlayerService.getCurrentlyPlayingVideoId().subscribe(item => {
-      // change isPlaying to true if that song is playing right now otherwise false
-      this.isPlaying = item.videoId !== this.item.videoId ? 'ended' : item.state === 1 ? 'playing' : 'loading';
+    this.ytPlayerService.getState().subscribe(item => {
+      // first option: if getState has item with videoId=null this song state=ended[play icon visible]
+      // second: videoId!=null and video needs buffering(state=loading[loading icon visible])
+      // third: doesn't need buffering(state=playing[pause icon visible])
+      if (item.videoId !== this.item.videoId) { this.state = 'ended'; }
+      else if (item.needBuffering === false) { this.state = 'playing'; }
+      else if (item.needBuffering === true) { this.state = 'loading'; }
     });
   }
 
   play() {
-    if (this.isPlaying === 'ended') {
+    if (this.state === 'ended') {
       this.ytPlayerService.load(this.item);
       this.eventPlay.emit(true); // true means start music
     }

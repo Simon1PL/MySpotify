@@ -1,5 +1,5 @@
 <div class="music">
-    <i class="play-button fa" aria-hidden="true" (click)="play()" [ngClass]="{'fa-play': isPlaying==='ended','fa-pause': isPlaying==='playing', 'fa-spinner': isPlaying==='loading'}"></i>
+    <i class="play-button fa" aria-hidden="true" (click)="play()" [ngClass]="{'fa-play': state==='ended','fa-pause': state==='playing', 'fa-spinner': state==='loading'}"></i>
     <img src={{item.thumbnails}} alt="">
     <div class="title">{{item.title}}</div>
     <div class="channel">{{item.channelTitle}}</div>

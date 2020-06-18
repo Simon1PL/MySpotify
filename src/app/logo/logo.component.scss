@@ -1,10 +1,13 @@
 .logo {
-    font-size: 50px;
+    font-size: 60px;
     font-weight: 500;
     color: var(--main-color);
-    font-family: 'Ceviche One', cursive;
+    font-family: var(--font);
     user-select: none;
     position: relative;
+    @media only screen and (max-width: 800px) {
+        font-size: 50px;
+    }
     @media only screen and (max-width: 700px) {
         visibility: hidden;
         &:after {

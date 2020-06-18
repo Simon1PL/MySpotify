@@ -7,10 +7,10 @@
         <div class="main-page-library">Library:</div>
     </nav>
     <section>
-        <header>
-            <div class="search" (click)="search(input.value);">
-                <input id="search" type="text" class="search-input" placeholder="Search..." #input>
-                <i class="fa fa-search search-icon" aria-hidden="true"></i>
+        <header [ngClass]="{'pink-background-image': theme==='pink'}">
+            <div class="search">
+                <input id="search" type="text" class="search-input" placeholder="Search..." #input [ngClass]="{'pink-background-image': theme==='pink'}">
+                <div class="search-icon" (click)="search(input.value);"><i class="fa fa-search" aria-hidden="true"></i></div>
             </div>
             <div class="theme">
                 <span>CHANGE THEME:</span>
@@ -26,12 +26,12 @@
             <span class="musicplayer-time">
                 {{actualTime / 60 | number: '2.0-0'}}:{{actualTime % 60 | number: '2.0-0'}}
             </span>
-            <i class="musicplayer-button fa" aria-hidden="true" (click)="play()" [ngClass]="{'fa-play': isPlaying==='ended','fa-pause': isPlaying==='playing', 'fa-spinner': isPlaying==='loading'}"></i>
+            <i class="musicplayer-button fa" aria-hidden="true" (click)="play()" [ngClass]="{'fa-play': state==='ended','fa-pause': state==='playing', 'fa-spinner': state==='loading'}"></i>
         </section>
         <section class="music-list" *ngFor="let item of results">
             <ms-music *ngIf="item" [item]="item" (eventPlay)="play($event)"></ms-music>
         </section>
-        <div (click)="search(input.value, true)">LOAD MORE</div>
+        <div class="more" *ngIf="results.length" (click)="search(input.value, true)">LOAD MORE</div>
     </section>
     <div class="yt-player" [ngStyle]="{'display': watchVideo ? 'block' : 'none'}">
         <!-- 1. The <iframe> (and video player) will replace this <div> tag. -->

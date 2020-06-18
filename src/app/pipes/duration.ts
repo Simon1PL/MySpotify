@@ -7,12 +7,15 @@ export class Duration implements PipeTransform {
 
   transform(value: string): string {
     if (value.indexOf('H') === -1) {
+      // tslint:disable-next-line: no-shadowed-variable
       const minutes = value.substring(value.indexOf('T') + 1, value.indexOf('M'));
+      // tslint:disable-next-line: no-shadowed-variable
       let seconds = value.substring(value.indexOf('M') + 1, value.indexOf('S'));
       if (seconds.length === 1) {seconds = 0 + seconds; }
       return `${minutes}:${seconds}`;
   }
     if (value.indexOf('M') === -1) {
+      // tslint:disable-next-line: no-shadowed-variable
       let seconds = value.substring(value.indexOf('T') + 1, value.indexOf('S'));
       if (seconds.length === 1) {seconds = 0 + seconds; }
       return `0:${seconds}`;

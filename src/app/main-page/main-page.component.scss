@@ -1,4 +1,8 @@
 .main-page {
+    --buttons-font-size: 40px;
+    font-size: 1.3rem;
+    --buttons-height: 40px;
+    --buttons-border: var(--main-color) solid 3px;
     color: var(--color);
     background: var(--bg-linear);
     display: flex;
@@ -16,39 +20,47 @@
     & section {
         width: 100%;
         overflow: auto;
-        padding: 20px;
 
         & header {
             position: sticky;
             top: 0;
             display: flex;
             justify-content: space-between;
+            background-color: var(--bg2);
+            width: 100%;
+            padding: 20px;
 
             & .search {
                 display: flex;
                 align-items: center;
                 width: 50%;
-                @media only screen and (max-width: 700px) {
+                @media only screen and (max-width: 800px) {
                     width: 100%;
                     margin-right: 17px;
                 }
                 &-input {
                     width: 100%;
                     padding: 5px 12px;
-                    height: 35px;
-                    border-radius: calc(35px / 2);
+                    height: var(--buttons-height);
+                    border-radius: calc(var(--buttons-height) / 2);
+                    z-index: 1;
+                    border: var(--buttons-border)
                 }
                 &-icon {
-                    align-items: center;
+                    height: var(--buttons-height);
+                    padding: 0 12px 1px 31px;
+                    z-index: 0;
+                    border: var(--buttons-border);
+                    border-bottom-right-radius: calc(var(--buttons-height) / 2);
+                    border-top-right-radius: calc(var(--buttons-height) / 2);
                     display: flex;
-                    height: 35px;
-                    padding: 0 10px 0 23px;
-                    border-top-right-radius: calc(35px / 2);
-                    border-bottom-right-radius: calc(35px / 2);
-                    border: solid 2px white;
+                    align-items: center;
                     position: relative;
-                    left: -20px;
-                    z-index: -1;
+                    left: -28px;
+                    cursor: pointer;
+                    & i {
+                        transform: scale(1.1);
+                    }
                 }
             }
 
@@ -74,7 +86,7 @@
                     background-color: var(--bg-pink);
                 }
                 & span {
-                    @media only screen and (max-width: 700px) {
+                    @media only screen and (max-width: 800px) {
                         display: none;
                     }
                 }
@@ -87,9 +99,29 @@
         }
 
         & .musicplayer {
+            position: sticky;
+            top: 80px;
+            background-color: var(--bg2);
+            padding: 0 20px 20px;
             &-button {
                 color: var(--main-color);
             }
+        }
+
+        & .more {
+            margin: auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: var(--buttons-border);
+            color: var(--color);
+            height: var(--buttons-height);
+            border-radius: calc(var(--buttons-height) / 2);
+            font-family: var(--font);
+            font-size: var(--buttons-font-size);
+            background-color: var(--main-color);
+            cursor: pointer;
+            margin: 20px;
         }
     }
 }
