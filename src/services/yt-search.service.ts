@@ -42,12 +42,12 @@ export class YtSearchService {
   // It returns duration time and view count of given video (as promise), is used below in this.search()
   private getDetailInfo(videoItem: any): any {
 
-    return {
+    // uncomment this to dont waste limit and comment below!!
+    /* return {
       duration: limit2.items[0].contentDetails.duration,
       views: limit2.items[0].statistics.viewCount
-    };
-    // uncomment this!!
-    /* return window['gapi'.toString()].client.youtube.videos.list({
+    }; */
+    return window['gapi'.toString()].client.youtube.videos.list({
       part: [
         'contentDetails,statistics'
       ],
@@ -69,7 +69,7 @@ export class YtSearchService {
             duration: limit2.items[0].contentDetails.duration,
             views: limit2.items[0].statistics.viewCount
           };
-        }); */
+        });
   }
 
   // YT Data api - Search: list
@@ -80,9 +80,8 @@ export class YtSearchService {
     this.setResultList();
     let searchResult: any;
 
-    searchResult = limitBle;
-    // uncomment this!!
-    /* await window['gapi'.toString()].client.youtube.search.list({
+    // uncomment this to dont waste limit and comment below!! /* searchResult = limitBle; */
+    await window['gapi'.toString()].client.youtube.search.list({
       part: [
         'snippet'
       ],
@@ -100,7 +99,7 @@ export class YtSearchService {
       (err) => {
         console.error('Execute error', err);
         searchResult = limitBle;
-      }); */
+      });
 
     const length = this.results.length;
     if (token === false) { while (this.results.length) { this.results.pop(); } }
