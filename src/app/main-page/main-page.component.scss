@@ -161,32 +161,39 @@
             align-items: center;
             top: 80px;
             background-color: var(--bg2);
-            padding: 20px;
+            padding: 10px;
             font-weight: 700;
-            max-height: 200px;
             overflow: hidden;
-            & .img {
-                padding: 5px;
-                position: relative;
-                height: 200px;
+            height: 200px;
+            &-img {
+                height: 100%;
                 font-size: 40px;
+                position: relative;
                 @media only screen and (max-width: 800px) {
                     display: none;
                 }
+                &:hover {
+                    & i {
+                        display: flex;
+                    }
+                }
                 &-thumbnails {
-                    width: auto;
                     height: 100%;
                 }
                 &-camera {
-                    height: 80%;
-                    width: 80%;
-                    transform: translate(-50%, -50%);
+                    font-size: 1.6em;
                     position: absolute;
-                    top: 50%;
-                    left: 50%;
+                    top: 0;
+                    height: 100%;
+                    width: 100%;
+                    display: none;
+                    align-items: center;
+                    justify-content: center;
                     color: white;
                     z-index: 2;
                     color: var(--main-color);
+                    background-color: rgba(0, 0, 0, 0.376);
+                    cursor: pointer;
                 }
             }
             &-info {
