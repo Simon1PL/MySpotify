@@ -37,7 +37,7 @@
                     <span class="musicplayer-info-controller-time">
                         {{actualTime / 60 | number: '2.0-0'}}:{{actualTime % 60 | number: '2.0-0'}}
                     </span>
-                    <i class="musicplayer-info-controller-button fa" aria-hidden="true" (click)="play()" [ngClass]="{'fa-play': state==='ended','fa-pause': state==='playing', 'fa-spinner': state==='loading'}"></i>
+                    <i class="musicplayer-info-controller-button fa" aria-hidden="true" (click)="play()" [ngClass]="{'fa-play': state==='ended','fa-pause': state==='playing', 'fa-spinner fa-spin fa-3x fa-fw': state==='loading'}"></i>
                     <span class="musicplayer-info-controller-duration">{{videoItem.duration | duration}}</span>
                 </div>
             </div>
