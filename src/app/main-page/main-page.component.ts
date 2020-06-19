@@ -51,7 +51,6 @@ export class MainPageComponent implements OnInit {
     if (play) {
       this.ytPlayerService.play();
       this.startTimer();
-      console.log(this.videoItem.thumbnails);
   }
     else {
       this.ytPlayerService.stop();
