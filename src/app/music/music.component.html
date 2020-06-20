@@ -1,9 +1,30 @@
 <div class="music">
-    <i class="play-button fa" aria-hidden="true" (click)="play()" [ngClass]="{'fa-play': state==='ended','fa-pause': state==='playing', 'fa-spinner fa-spin fa-3x fa-fw': state==='loading'}"></i>
-    <img src={{item.thumbnails}} alt="">
-    <div class="title">{{item.title}}</div>
-    <div class="channel">{{item.channelTitle}}</div>
-    <div class="date">{{item.date | date}}</div>
-    <div class="duration">{{item.duration | duration}}</div>
-    <div class="views">{{item.views | number}}</div>
+    <section class="left">
+        <div class="static-size" (click)="play()">
+            <div class="button fa" aria-hidden="true" [ngClass]="{'fa-play fix-play-icon': state==='ended','fa-pause': state==='playing', 'fa-spinner fa-spin fa-3x fa-fw button-changesize': state==='loading'}"></div>
+        </div>
+        <div class="thumbnails">
+            <img class="thumbnails-img" src="{{item.thumbnails}}" alt="">
+            <i class="fa fa-video-camera thumbnails-camera" aria-hidden="true" (click)="watchVideo()"></i>
+        </div>
+        <section class="middle" (click)="play()">
+            <div class="title">{{item.title}}</div>
+            <span class="channel">{{item.channelTitle}}</span>
+            <div class="line">
+                <div class="views">{{item.views | number}} wyświetleń</div>
+                <i class="fa fa-circle dot" aria-hidden="true"></i>
+                <div class="date">{{item.date | date}}</div>
+            </div>
+            <span class="duration">
+                <i class="fa fa-clock-o" aria-hidden="true"></i>
+                {{item.duration | duration}}
+                <i class="fa fa-trash" aria-hidden="true"></i>
+            </span>
+        </section>
+    </section>
+    <section class="right">
+        <i class="fa fa-heart" aria-hidden="true" (click)="like()" [ngClass]="{like: !item.like, pink: item.like}"></i>
+        <i class="fa fa-download" aria-hidden="true" (click)="download()" [ngClass]="{pink: item.download, like: !item.download}"></i>
+        <i class="fa fa-plus" aria-hidden="true"></i>
+    </section>
 </div>

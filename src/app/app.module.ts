@@ -6,13 +6,15 @@ import { LogoComponent } from './logo/logo.component';
 import { MusicComponent } from './music/music.component';
 import { YtPlayerService } from '../services/yt-player.service';
 import { Duration } from './pipes/duration';
+import { TimePipe } from './pipes/time.pipe';
 
 @NgModule({
   declarations: [
     MainPageComponent,
     LogoComponent,
     MusicComponent,
-    Duration
+    Duration,
+    TimePipe
   ],
   imports: [
     BrowserModule

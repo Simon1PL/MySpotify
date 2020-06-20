@@ -32,9 +32,9 @@ export class YtSearchService {
   }
 
   private loadClient() {
-    window['gapi'.toString()].client.setApiKey('AIzaSyAyAGXF70GiuS0UmVzSfd-oj2HTaFTl8TY');
+    window['gapi'.toString()].client.setApiKey('AIzaSyANLfneVXla87P6kcHGMpQ1_oG8dg3lvBA'); // AIzaSyAyAGXF70GiuS0UmVzSfd-oj2HTaFTl8TY
     return window['gapi'.toString()].client.load('https://www.googleapis.com/discovery/v1/apis/youtube/v3/rest')
-      .then(() => { console.log('GAPI client loaded for API'); console.log('YtSearchService done'); },
+      .then(() => { console.log('GAPI client loaded for API (YtSearchService ready)'); },
         (err) => { console.error('Error loading GAPI client for API', err); });
   }
 
@@ -42,7 +42,7 @@ export class YtSearchService {
   // It returns duration time and view count of given video (as promise), is used below in this.search()
   private getDetailInfo(videoItem: any): any {
 
-    // uncomment this to dont waste limit and comment below!!
+    // uncomment this to dont waste limit and comment below!! limit: 10,000 cost of one this: 4(4*5=20)
     /* return {
       duration: limit2.items[0].contentDetails.duration,
       views: limit2.items[0].statistics.viewCount
@@ -74,18 +74,19 @@ export class YtSearchService {
 
   // YT Data api - Search: list
   // arguments: text - searched phrase, token - next page token
-  // assigns to this.results first 10 search results, if token is true just add 10 more results
+  // assigns to this.results first 5 search results, if token is true just add 5 more results
   async search(text: string, token: boolean) {
-    if (text === '') {text = 'piosenki'; }
+    if (text === '') { text = 'piosenki'; }
     this.setResultList();
     let searchResult: any;
 
-    // uncomment this to dont waste limit and comment below!! /* searchResult = limitBle; */
+    // uncomment this to dont waste limit and comment below!! limit: 10,000 cost of one this: 100 
+    /* searchResult = limitBle; */
     await window['gapi'.toString()].client.youtube.search.list({
       part: [
         'snippet'
       ],
-      maxResults: 10,
+      maxResults: 5,
       q: text,
       type: 'video',
       safeSearch: 'none',
@@ -126,7 +127,10 @@ export class YtSearchService {
       thumbnails: item.snippet.thumbnails.medium.url,
       date: item.snippet.publishedAt,
       duration: details.duration,
-      views: details.views
+      views: details.views,
+      like: false,
+      playlists: [],
+      download: null
     };
   }
 

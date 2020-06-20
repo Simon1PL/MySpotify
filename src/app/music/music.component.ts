@@ -36,4 +36,18 @@ export class MusicComponent implements OnInit {
       this.eventPlay.emit(false); // false means stop music
     }
   }
+
+  like() {
+    this.item.like = !this.item.like;
+    // change in database and this.item
+  }
+
+  download(){
+    // change in database and this.item
+  }
+
+  watchVideo() {
+    this.play();
+    this.ytPlayerService.watchVideo();
+  }
 }

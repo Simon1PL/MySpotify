@@ -5,240 +5,349 @@
     --buttons-border: var(--main-color) solid 3px;
     color: var(--color);
     background: var(--bg-linear);
-    display: flex;
     height: 100vh;
     width: 100%;
 
-    & nav {
-        background-color: var(--bg2);
+    & header {
+        position: sticky;
+        top: 0;
         display: flex;
-        flex-direction: column;
-        min-width: 30%;
-        padding: 10px;
-        font-size: 1.6em;
-        text-align: center;
-        overflow: auto;
-        & header {
-            margin-bottom: 20px;
-        }
-        & div {
-            border-top: 3px solid var(--color);
-            border-bottom: 3px solid var(--color);
-            background-color: var(--bg1);
-            opacity: 0.7;
-            margin-bottom: 25px;
-            color: var(--main-color);
-            cursor: pointer;
-            user-select: none;
-            font-weight: 700;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        padding: 20px;
+        z-index: 2;
+        height: 80px;
+        background-color: var(--bg2);
+        & .menu {
+            margin-left: 15px;
+            transform: scale(1.8);
+            display: none;
             &:hover {
-                opacity: 1;
+                color: var(--main-color);
+            }
+            @media only screen and (max-width: 800px) {
+                display: block;
             }
         }
-        & .library {
-            font-family: var(--font);
-            color: var(--main-color);
-            font-size: 1.8em;
-            margin-bottom: 15px;
-            user-select: none;
-        }
-        & .findInSave {
-            font-family: var(--font);
-            color: var(--main-color);
-            font-size: 1.7em;
-            margin-bottom: 5px;
-            user-select: none;
-        }
-        & input {
-            width: 100%;
-            padding: 5px 12px;
-            height: var(--buttons-height);
-            border-radius: calc(var(--buttons-height) / 2);
-            border: var(--buttons-border)
-        }
-        & .icon {
-            height: var(--buttons-height);
-            padding: 0 20px;
-            border: var(--buttons-border);
-            border-radius: calc(var(--buttons-height) / 2);
+        & .search {
             display: flex;
             align-items: center;
-            justify-content: center;
+            width: 40%;
+            margin-left: 30px;
+            @media only screen and (max-width: 800px) {
+                width: 100%;
+                margin: 0;
+                position: relative;
+                right: -15px;
+            }
+            &-input {
+                width: 100%;
+                padding: 5px 12px;
+                height: var(--buttons-height);
+                border-radius: calc(var(--buttons-height) / 2);
+                z-index: 1;
+                border: var(--buttons-border)
+            }
+            &-icon {
+                height: var(--buttons-height);
+                padding: 0 12px 1px 31px;
+                z-index: 0;
+                border: var(--buttons-border);
+                border-bottom-right-radius: calc(var(--buttons-height) / 2);
+                border-top-right-radius: calc(var(--buttons-height) / 2);
+                display: flex;
+                align-items: center;
+                position: relative;
+                left: -28px;
+                cursor: pointer;
+                & i {
+                    transform: scale(1.1);
+                }
+            }
+        }
+    
+        & .theme {
             cursor: pointer;
-            margin: 10px auto;
-            color: var(--color);
-            background-color: var(--main-color);
-            font-family: var(--font);
-            font-size: 1em;
+            user-select: none;
+            display: flex;
+            align-items: center;
+    
+            &-square {
+                width: 25px;
+                height: 25px;
+                display: inline-block;
+                margin: 0 5px;
+            }
+            &-dark {
+                background-color: var(--bg-dark);
+            }
+            &-light {
+                background-color: var(--bg-light);
+            }
+            &-pink {
+                background-color: var(--bg-pink);
+            }
+            & span {
+                @media only screen and (max-width: 800px) {
+                    display: none;
+                }
+            }
         }
     }
 
-    & section {
-        width: 100%;
-        overflow: auto;
-
-        & header {
-            position: sticky;
-            top: 0;
-            display: flex;
-            justify-content: space-between;
+    & .body {
+        display: flex;
+        height: calc(100vh - 80px);
+        & nav {
             background-color: var(--bg2);
-            width: 100%;
-            padding: 20px;
-
-            & .search {
-                display: flex;
-                align-items: center;
-                width: 50%;
+            display: flex;
+            flex-direction: column;
+            min-width: 30%;
+            padding: 10px;
+            font-size: 1.6em;
+            text-align: center;
+            overflow: auto;
+            @media only screen and (max-width: 800px) {
+                display: none;
+                position: absolute;
+                top: 230px;
+                height: calc(100vh - 230px);
+                overflow: auto;
+                width: 100%;
+                padding-top: 55px;
+            }
+            & .close-menu {
+                color: var(--main-color);
+                position: absolute;
+                top: 10px;
+                transform: scale(2) translate(-50%);
+                left: 52%;
+                display: none;
                 @media only screen and (max-width: 800px) {
-                    width: 100%;
-                }
-                &-input {
-                    width: 100%;
-                    padding: 5px 12px;
-                    height: var(--buttons-height);
-                    border-radius: calc(var(--buttons-height) / 2);
-                    z-index: 1;
-                    border: var(--buttons-border)
-                }
-                &-icon {
-                    height: var(--buttons-height);
-                    padding: 0 12px 1px 31px;
-                    z-index: 0;
-                    border: var(--buttons-border);
-                    border-bottom-right-radius: calc(var(--buttons-height) / 2);
-                    border-top-right-radius: calc(var(--buttons-height) / 2);
-                    display: flex;
-                    align-items: center;
-                    position: relative;
-                    left: -28px;
-                    cursor: pointer;
-                    & i {
-                        transform: scale(1.1);
-                    }
+                    display: block;
                 }
             }
-
-            & .theme {
+            & div {
+                border-top: 3px solid var(--color);
+                border-bottom: 3px solid var(--color);
+                background-color: var(--bg1);
+                opacity: 0.7;
+                margin-bottom: 25px;
+                color: var(--main-color);
                 cursor: pointer;
                 user-select: none;
+                font-weight: 700;
+                &:hover {
+                    opacity: 1;
+                }
+            }
+            & .library {
+                font-family: var(--font);
+                color: var(--main-color);
+                font-size: 1.8em;
+                margin-bottom: 15px;
+                user-select: none;
+            }
+            & .findInSave {
+                font-family: var(--font);
+                color: var(--main-color);
+                font-size: 1.7em;
+                margin-bottom: 5px;
+                user-select: none;
+            }
+            & input {
+                width: 100%;
+                padding: 5px 12px;
+                height: var(--buttons-height);
+                border-radius: calc(var(--buttons-height) / 2);
+                border: var(--buttons-border)
+            }
+            & .icon {
+                height: var(--buttons-height);
+                padding: 0 20px;
+                border: var(--buttons-border);
+                border-radius: calc(var(--buttons-height) / 2);
                 display: flex;
                 align-items: center;
-        
-                &-square {
-                    width: 25px;
-                    height: 25px;
-                    display: inline-block;
-                    margin: 0 5px;
+                justify-content: center;
+                cursor: pointer;
+                margin: 10px auto;
+                color: var(--color);
+                background-color: var(--main-color);
+                font-family: var(--font);
+                font-size: 1em;
+            }
+        }
+    
+        & section {
+            width: 100%;
+            overflow: auto;
+    
+            & .music-list {
+                flex-direction: column;
+                padding: 20px 0px 20px 0px;
+            }
+    
+            & .musicplayer {
+                position: sticky;
+                display: flex;
+                justify-content: space-around;
+                text-align: center;
+                align-items: center;
+                top: 0px;
+                background-color: var(--bg2);
+                padding: 20px;
+                overflow: hidden;
+                height: 200px;
+                z-index: 2;
+                @media only screen and (max-height: 450px) {
+                    height: 150px;
                 }
-                &-dark {
-                    background-color: var(--bg-dark);
+                @media only screen and (max-width: 800px) {
+                    height: 150px;
+                    padding: 10px;
                 }
-                &-light {
-                    background-color: var(--bg-light);
-                }
-                &-pink {
-                    background-color: var(--bg-pink);
-                }
-                & span {
+                &-img {
+                    height: 100%;
+                    position: relative;
                     @media only screen and (max-width: 800px) {
                         display: none;
                     }
-                }
-            }
-        }
-
-        & .music-list {
-            flex-direction: column;
-            padding: 20px;
-        }
-
-        & .musicplayer {
-            position: sticky;
-            display: flex;
-            justify-content: space-around;
-            text-align: center;
-            align-items: center;
-            top: 80px;
-            background-color: var(--bg2);
-            padding: 20px;
-            font-weight: 700;
-            overflow: hidden;
-            height: 200px;
-            &-img {
-                height: 100%;
-                font-size: 40px;
-                position: relative;
-                @media only screen and (max-width: 800px) {
-                    display: none;
-                }
-                &:hover {
-                    & i {
+                    &:hover {
+                        & i {
+                            visibility: visible;
+                        }
+                    }
+                    &-thumbnails {
+                        height: 100%;
+                    }
+                    &-camera {
+                        font-size: 60px;
+                        position: absolute;
+                        top: 0;
+                        height: 100%;
+                        width: 100%;
                         display: flex;
-                    }
-                }
-                &-thumbnails {
-                    height: 100%;
-                }
-                &-camera {
-                    font-size: 1.6em;
-                    position: absolute;
-                    top: 0;
-                    height: 100%;
-                    width: 100%;
-                    display: none;
-                    align-items: center;
-                    justify-content: center;
-                    color: white;
-                    z-index: 2;
-                    color: var(--main-color);
-                    background-color: rgba(0, 0, 0, 0.479);
-                    cursor: pointer;
-                }
-            }
-            &-info {
-                display: flex;
-                flex-direction: column;
-                justify-content: space-around;
-                &-chanel, &-title {
-                    margin: 10px 0;
-                    @media only screen and (max-width: 800px) {
-                        margin: 0;
-                    }
-                }
-                &-controller {
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    margin: 15px 0;
-                    &-button {
+                        visibility: hidden;
+                        align-items: center;
+                        justify-content: center;
+                        z-index: 1;
                         color: var(--main-color);
-                        margin: 0 20px 5px;
-                        transform: scale(2);
+                        background-color: rgba(0, 0, 0, 0.479);
                         cursor: pointer;
                     }
                 }
+                &-info {
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: space-around;
+                    &-title {
+                        font-weight: 700;
+                        margin-bottom: 1px;
+                    }
+                    &-controller {
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        & .camera-smallscreen {
+                            display: none;
+                            transform: scale(1.8);
+                            cursor: pointer;
+                            &:hover {
+                                color: var(--main-color);
+                            }
+                            @media only screen and (max-width: 800px) {
+                                display: block;
+                            }
+                        }
+                        &-static-size {
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            height: 50px;
+                            width: 50px;
+                            &-button {
+                                color: var(--main-color);
+                                transform: scale(2);
+                                cursor: pointer;
+                                display: flex;
+                                justify-content: center;
+                                align-items: center;
+                                &-spin {
+                                    font-size: 40px;
+                                }
+                            }
+                        }
+                        & .changesong {
+                            transform: scale(1.8, 1.6);
+                            margin: 0 20px;
+                            cursor: pointer;
+                            &:hover {
+                                color: var(--main-color);
+                            }
+                        }
+                        & .disabled {
+                        transform: scale(1.8, 1.6);
+                            margin: 0 20px;
+                            cursor: default;
+                            color: gray;
+                            &:hover {
+                                color: gray;
+                            }
+                        }
+                    }
+                }
+                & .right {
+                    padding: 5px;
+                    width: auto;
+                    font-size: 1.6em;
+                    overflow: visible;
+                    @media only screen and (max-width: 400px) {
+                        padding: 0;
+                    }
+                    & .fa-heart {
+                        cursor: pointer;
+                        display: block;
+                        margin-bottom: 12px;
+                    }
+                    & .like {
+                        color: var(--color);
+                        &:hover {
+                            color: var(--main-color);
+                        }
+                    }
+                    & .fa-download {
+                        cursor: pointer;
+                        display: block;
+                    }
+                    & .pink {
+                        color: var(--main-color);
+                    }
+                    & .fa-plus {
+                        cursor: pointer;
+                        &:hover {
+                            color: var(--main-color);
+                        }
+                    }
+                }
             }
-            & .fa-download {
-                font-size: 1.6em;
+    
+            & .more {
+                margin: auto;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                border: var(--buttons-border);
+                color: var(--color);
+                height: var(--buttons-height);
+                border-radius: calc(var(--buttons-height) / 2);
+                font-family: var(--font);
+                font-size: var(--buttons-font-size);
+                background-color: var(--main-color);
                 cursor: pointer;
+                margin: 20px;
             }
-        }
-
-        & .more {
-            margin: auto;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            border: var(--buttons-border);
-            color: var(--color);
-            height: var(--buttons-height);
-            border-radius: calc(var(--buttons-height) / 2);
-            font-family: var(--font);
-            font-size: var(--buttons-font-size);
-            background-color: var(--main-color);
-            cursor: pointer;
-            margin: 20px;
         }
     }
 }
@@ -274,5 +383,15 @@
     left: 0;
     width: 100%;
     height: 100%;
-    display: none;
+    z-index: 5;
+    justify-content: center;
+    align-items: center;
+    & .exit {
+        position: absolute;
+        right: 30px;
+        top: 10px;
+        color: var(--main-color);
+        font-size: 60px;
+        cursor: pointer;
+    }
 }

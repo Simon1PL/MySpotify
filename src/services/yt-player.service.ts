@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Subject, Observable } from 'rxjs';
 import { Music } from 'src/app/music';
-import { pinkPanter } from 'src/app/main-page/main-page.component';
 
 @Injectable({
   providedIn: 'root'
@@ -13,11 +12,16 @@ export class YtPlayerService {
   // Observable object, videoId=null means object is paused(has play icon visible)
   private state = new Subject<{videoId: string, needBuffering: boolean}>();
   private videoItemToObserve = new Subject<Music>();
+  private fullScreen = new Subject<boolean>();
   private isVideoBuffering = false;
+  private currentPlaylist: Music[] = null;
 
   // start or unpause video
-  play() {
+  play(playlist: Music[]) {
     if (this.isPlayerLoaded) {
+      if (this.isVideoBuffering) {
+        this.currentPlaylist = playlist;
+      }
       this.player.playVideo();
       this.state.next({videoId: this.playerVideoId, needBuffering: this.isVideoBuffering ? true : false});
     }
@@ -48,7 +52,7 @@ export class YtPlayerService {
     return this.videoItemToObserve.asObservable();
   }
   getTime() {
-    if (this.isPlayerLoaded && this.player.getCurrentTime()) {
+    if (this.isPlayerLoaded) {
       return this.player.getCurrentTime();
     }
     return 0;
@@ -61,6 +65,12 @@ export class YtPlayerService {
     if (this.isPlayerLoaded) {
       return this.player.getPlayerState();
     }
+  }
+  observeWhenFullScreen(): Observable<boolean> {
+    return this.fullScreen.asObservable();
+  }
+  watchVideo() {
+    this.fullScreen.next(true);
   }
 
   constructor() {
@@ -90,6 +100,8 @@ export class YtPlayerService {
   private onPlayerReady(event) {
     this.isPlayerLoaded = true;
     console.log('YtPlayerService done');
+    this.load(pinkPanter);
+    this.stop();
   }
   // 5. The API calls this function when the player's state changes like PLAYING, PAUSE, ENDED.
   private onPlayerStateChange(event) {
@@ -97,9 +109,26 @@ export class YtPlayerService {
       this.state.next({videoId: null, needBuffering: null});
       this.isVideoBuffering = false;
     }
+    if (!this.isVideoBuffering && event.data === window['YT'.toString()].PlayerState.PAUSED) {
+      this.state.next({videoId: null, needBuffering: null});
+      // jesli puscimy muzyke w innym oknie podczas ladowania nowej w tym to sie zepsuje ._. ale to bylo najlepsze wyjscie bo:
+      // jak wlacze ze moze podczas buforowania zatrzymac to ladowanie nowej piosenki zatrzymuje stara
+      // i najpierw widac stop a dopiero potem start co bardzo psuje wyglad bo
+      // ta funkcja onPlayerStateChange dziala jakos z opoznieniem wiec chwile widac tego useless stopa
+    }
     else if (this.isVideoBuffering && event.data === window['YT'.toString()].PlayerState.PLAYING) {
       this.state.next({videoId: this.playerVideoId, needBuffering: false});
       this.isVideoBuffering = false;
     }
   }
 }
+
+const pinkPanter = {
+  title: 'Różowa pantera',
+  videoId: '5H7bNUFGMs0',
+  channelTitle: 'Szpaku',
+  thumbnails: 'https://i.ytimg.com/vi/lk70ee3UMAc/hqdefault.jpg',
+  date: null,
+  duration: 'T2M43S',
+  views: null
+};

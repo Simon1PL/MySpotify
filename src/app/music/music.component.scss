@@ -1,0 +1,157 @@
+.music {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 0 40px 0 20px;
+    @media only screen and (max-width: 900px) {
+        margin: 0 20px 0 20px;
+    }
+    @media only screen and (max-width: 400px) {
+        margin-left: 0;
+    }
+    & .left {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        height: 150px;
+        @media only screen and (max-width: 800px) {
+            height: 120px;
+        }
+        & .static-size {
+            color: var(--main-color);
+            height: 60px;
+            width: 60px;
+            min-height: 60px;
+            min-width: 60px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 2px solid;
+            border-radius: 50%;
+            margin-right: 10px;
+            cursor: pointer;
+            transition: font-size ease-in 0.1s;
+            @media only screen and (max-width: 800px) {
+                display: none;
+            }
+            &:hover {
+                font-size: 1.1em;
+            }
+            & .button {
+                transform: scale(2);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                &-changesize {
+                    font-size: 40px;
+                }
+            }
+        }
+        & .thumbnails {
+            height: 100%;
+            position: relative;
+            @media only screen and (max-width: 1200px) {
+                display: none;
+            }
+            &:hover {
+                & i {
+                    visibility: visible;
+                }
+            }
+            &-img {
+                height: 100%;
+                width: auto;
+            }
+            &-camera {
+                font-size: 64px;
+                position: absolute;
+                top: 0;
+                height: 100%;
+                width: 100%;
+                visibility: hidden;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 1;
+                color: var(--main-color);
+                background-color: rgba(0, 0, 0, 0.479);
+                cursor: pointer;
+            }
+        }
+    }
+
+    & .middle {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        margin: 0 20px;
+        height: 100%;
+        cursor: pointer;
+        & .title {
+            font-weight: 700;
+        }
+        & .channel {
+            margin-right: 20px;
+        }
+        & .line {
+            display: flex;
+            @media only screen and (max-width: 900px) {
+                display: none;
+            }
+            & .dot {
+                display: flex;
+                align-items: center;
+                font-size: 7px;
+                margin: 0 10px;
+            }
+        }
+        &:hover {
+            & .title {
+                color: var(--main-color);
+            }
+        }
+        & .fa-trash {
+            margin-left: 20px;
+            font-size: 1.3em;
+            &:hover {
+                color: var(--main-color);
+            }
+        }
+
+    }
+    & .right {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        font-size: 1.6em;
+        & .fa-heart {
+            cursor: pointer;
+            margin-bottom: 12px;
+        }
+        & .like {
+            color: var(--color);
+            &:hover {
+                color: var(--main-color);
+            }
+        }
+        & .fa-download {
+            margin-bottom: 7px;
+            cursor: pointer;
+        }
+        & .pink {
+            color: var(--main-color);
+        }
+        & .fa-plus {
+            margin: auto;
+            cursor: pointer;
+            &:hover {
+                color: var(--main-color);
+            }
+        }
+    } 
+}
+
+.fix-play-icon {
+    position: relative;
+    right: -4px;
+}
