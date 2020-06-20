@@ -32,7 +32,7 @@ export class YtSearchService {
   }
 
   private loadClient() {
-    window['gapi'.toString()].client.setApiKey('AIzaSyANLfneVXla87P6kcHGMpQ1_oG8dg3lvBA'); // AIzaSyAyAGXF70GiuS0UmVzSfd-oj2HTaFTl8TY
+    window['gapi'.toString()].client.setApiKey('AIzaSyAyAGXF70GiuS0UmVzSfd-oj2HTaFTl8TY'); // AIzaSyANLfneVXla87P6kcHGMpQ1_oG8dg3lvBA
     return window['gapi'.toString()].client.load('https://www.googleapis.com/discovery/v1/apis/youtube/v3/rest')
       .then(() => { console.log('GAPI client loaded for API (YtSearchService ready)'); },
         (err) => { console.error('Error loading GAPI client for API', err); });
