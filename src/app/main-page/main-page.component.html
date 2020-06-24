@@ -21,10 +21,10 @@
             <div class="like">Polubione utwory</div>
             <div class="favorite">Wykonawcy</div>
             <span class="library">Playlisty:</span>
-            <div class="playlist" *ngFor="let playlist of playlists">{{playlist.name}}</div>
+            <div class="playlist" *ngFor="let playlist of playlists" (click)="showPlaylist(playlist.name)">{{playlist.name}}</div>
             <span class="findInSave">Szukaj w zapisanych</span>
-            <input type="text" placeholder="Search...">
-            <button class="icon" (click)="search(input.value);">SZUKAJ <i class="fa fa-search" aria-hidden="true"></i></button>
+            <input type="text" placeholder="Search..." #input2>
+            <button class="icon" (click)="searchInSave(input2.value);">SZUKAJ <i class="fa fa-search" aria-hidden="true"></i></button>
         </nav>
 
         <section>

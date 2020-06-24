@@ -2,6 +2,8 @@ import { Component, OnInit, HostListener, Input } from '@angular/core';
 import { Music } from '../music';
 import { YtPlayerService } from '../../services/yt-player.service';
 import { YtSearchService } from 'src/services/yt-search.service';
+import { HttpService } from 'src/services/http.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'ms-main-page',
@@ -16,12 +18,15 @@ export class MainPageComponent implements OnInit {
   watchVideo = false; // when true video is visible
   results: Music[] = [];
   videoItem: Music = pinkPanter; // info about playing/loaded song
-  playlists: {name: string}[] = [{name: 'impreza1'}, {name: 'rapy2'}, {name: 'hiphop3'}];
+  playlists: {name: string}[];
   currentPlaylist: Music[] = null; // bedzie dostawala informacje jesli zostanie puszczona muzyka
   hasNext = false;
   hasPrev = false;
 
-  constructor(private ytPlayerService: YtPlayerService, private ytSearchService: YtSearchService) { }
+  private subscription: Subscription;
+
+
+  constructor(private ytPlayerService: YtPlayerService, private ytSearchService: YtSearchService, private httpService: HttpService) { }
 
   ngOnInit(): void {
     this.ytPlayerService.getState().subscribe(item => {
@@ -34,7 +39,8 @@ export class MainPageComponent implements OnInit {
       this.watch();
     });
     this.ytPlayerService.getCurrentlyPlayingVideoItem().subscribe(videoItem => this.videoItem = videoItem);
-    this.ytSearchService.getResultList().subscribe(result => this.results = result);
+    this.subscription = this.httpService.getSongs().subscribe(result => this.results = result);
+    this.httpService.getPlaylists().subscribe(result => this.playlists = result);
   }
 
   changeTheme(theme: string) {
@@ -78,6 +84,18 @@ export class MainPageComponent implements OnInit {
 
   search(text: string, token = false) {
     this.ytSearchService.search(text, token);
+    this.subscription.unsubscribe();
+    this.subscription = this.ytSearchService.getResultList().subscribe(result => this.results = result);
+  }
+
+  searchInSave(text: string) {
+    this.subscription.unsubscribe();
+    this.subscription = this.httpService.searchSongs(text).subscribe(songs => this.results = songs);
+  }
+
+  showPlaylist(playlist: string) {
+    this.subscription.unsubscribe();
+    this.subscription = this.httpService.getPlaylist(playlist).subscribe(songs => this.results = songs);
   }
 
   @HostListener('document:keydown', ['$event'])
@@ -96,6 +114,7 @@ export class MainPageComponent implements OnInit {
 
   like() {
     this.videoItem.like = !this.videoItem.like;
+    this.httpService.addSong(this.videoItem, 'polskie');
     // change in database and this.item
   }
 

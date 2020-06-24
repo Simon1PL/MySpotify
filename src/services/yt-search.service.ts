@@ -23,7 +23,7 @@ export class YtSearchService {
   constructor() {
     window['gapi'.toString()]?.load('client:auth2', () => {
       window['gapi'.toString()].auth2.init({
-        client_id: '559639076556-gm40i1bq280ukks6c1cpp5fjd45r5fjh.apps.googleusercontent.com',
+        client_id: '694429461676-6ka7t7f3rkmumih6agavc162a9eb7okj.apps.googleusercontent.com',
         events: {
           onReady: this.loadClient()
         }
@@ -32,7 +32,7 @@ export class YtSearchService {
   }
 
   private loadClient() {
-    window['gapi'.toString()].client.setApiKey('AIzaSyAyAGXF70GiuS0UmVzSfd-oj2HTaFTl8TY'); // AIzaSyANLfneVXla87P6kcHGMpQ1_oG8dg3lvBA
+    window['gapi'.toString()].client.setApiKey('AIzaSyDlKeUFJIuOtRvuKf7kuvvPAV3wZI0klgU');
     return window['gapi'.toString()].client.load('https://www.googleapis.com/discovery/v1/apis/youtube/v3/rest')
       .then(() => { console.log('GAPI client loaded for API (YtSearchService ready)'); },
         (err) => { console.error('Error loading GAPI client for API', err); });
@@ -80,7 +80,7 @@ export class YtSearchService {
     this.setResultList();
     let searchResult: any;
 
-    // uncomment this to dont waste limit and comment below!! limit: 10,000 cost of one this: 100 
+    // uncomment this to dont waste limit and comment below!! limit: 10,000 cost of one this: 100
     /* searchResult = limitBle; */
     await window['gapi'.toString()].client.youtube.search.list({
       part: [
@@ -113,6 +113,7 @@ export class YtSearchService {
         this.results[index] = (this.createMusic(item, videoDetail));
       }
     });
+    this.setResultList();
     this.nextPageToken = searchResult.nextPageToken;
   }
 

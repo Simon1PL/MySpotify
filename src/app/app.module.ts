@@ -7,6 +7,8 @@ import { MusicComponent } from './music/music.component';
 import { YtPlayerService } from '../services/yt-player.service';
 import { Duration } from './pipes/duration';
 import { TimePipe } from './pipes/time.pipe';
+import { HttpClientModule } from '@angular/common/http';
+import { HttpService } from 'src/services/http.service';
 
 @NgModule({
   declarations: [
@@ -17,9 +19,13 @@ import { TimePipe } from './pipes/time.pipe';
     TimePipe
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    HttpClientModule
   ],
-  providers: [YtPlayerService],
+  providers: [
+    YtPlayerService,
+    HttpService
+  ],
   bootstrap: [MainPageComponent]
 })
 export class AppModule { }
