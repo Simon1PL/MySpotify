@@ -18,13 +18,14 @@
             <span class="duration">
                 <i class="fa fa-clock-o" aria-hidden="true"></i>
                 {{item.duration | duration}}
-                <i class="fa fa-trash" aria-hidden="true"></i>
+                <!-- <i class="fa fa-trash" aria-hidden="true"></i> -->
             </span>
         </section>
     </section>
     <section class="right">
         <i class="fa fa-heart" aria-hidden="true" (click)="like()" [ngClass]="{like: !item.like, pink: item.like}"></i>
-        <i class="fa fa-download" aria-hidden="true" (click)="download()" [ngClass]="{pink: item.download, like: !item.download}"></i>
-        <i class="fa fa-plus" aria-hidden="true"></i>
+        <i class="fa fa-download" aria-hidden="true" (click)="download()" [ngClass]="{pink: item.download, like: !item.download}" style="cursor: default; color: gray;"></i>
+        <i class="fa fa-plus" aria-hidden="true" (click)="add=true"></i>
+        <ms-playlist-checkbox *ngIf="add" [song]="item" (click)="add=false"></ms-playlist-checkbox>
     </section>
 </div>

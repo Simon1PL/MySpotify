@@ -6,6 +6,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class Duration implements PipeTransform {
 
   transform(value: string): string {
+    if (!value) {return ''; }
     if (value.indexOf('H') === -1) {
       // tslint:disable-next-line: no-shadowed-variable
       const minutes = value.substring(value.indexOf('T') + 1, value.indexOf('M'));

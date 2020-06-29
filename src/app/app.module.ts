@@ -9,6 +9,7 @@ import { Duration } from './pipes/duration';
 import { TimePipe } from './pipes/time.pipe';
 import { HttpClientModule } from '@angular/common/http';
 import { HttpService } from 'src/services/http.service';
+import { PlaylistCheckboxComponent } from './playlist-checkbox/playlist-checkbox.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { HttpService } from 'src/services/http.service';
     LogoComponent,
     MusicComponent,
     Duration,
-    TimePipe
+    TimePipe,
+    PlaylistCheckboxComponent,
   ],
   imports: [
     BrowserModule,

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Music } from 'src/app/music';
 import { Subject, Observable } from 'rxjs';
+import { HttpService } from './http.service';
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +21,7 @@ export class YtSearchService {
     this.resultList.next(this.results);
   }
 
-  constructor() {
+  constructor(private httpService: HttpService) {
     window['gapi'.toString()]?.load('client:auth2', () => {
       window['gapi'.toString()].auth2.init({
         client_id: '694429461676-6ka7t7f3rkmumih6agavc162a9eb7okj.apps.googleusercontent.com',

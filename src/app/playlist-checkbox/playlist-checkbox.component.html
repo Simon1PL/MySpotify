@@ -1,0 +1,16 @@
+<div class="background">
+    <ul class="playlist-checkbox" (click)="onEvent($event)">
+        <li *ngFor="let playlist of playlists">
+            <label>
+                <input #inputEl type="checkbox" [checked]="isInSongPlaylists(playlist)" (change)="addOrDeleteFromPlaylist(inputEl.checked, playlist.name)">
+                {{playlist.name}}
+            </label>
+        </li>
+        <li>
+            <p>Utwórz nową playliste</p>
+            <input #playlistName type="text" placeholder="Wpisz nazwe playlisty...">
+            <br/>
+            <button (click)="createNewPlaylist(playlistName.value)">Utwórz</button>
+        </li>
+    </ul>
+</div>

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Subject, Observable } from 'rxjs';
 import { Music } from 'src/app/music';
+import { HttpService } from './http.service';
 
 @Injectable({
   providedIn: 'root'
@@ -8,13 +9,14 @@ import { Music } from 'src/app/music';
 export class YtPlayerService {
   private isPlayerLoaded = false; // when YT API are loaded this is changing to true
   private player: any;
-  private playerVideoId: string;
+  playerVideoId: string;
   // Observable object, videoId=null means object is paused(has play icon visible)
   private state = new Subject<{videoId: string, needBuffering: boolean}>();
   private videoItemToObserve = new Subject<Music>();
   private fullScreen = new Subject<boolean>();
   private isVideoBuffering = false;
   private currentPlaylist: Music[] = null;
+  private history: Music[] = [];
 
   // start or unpause video
   play(playlist: Music[]) {
@@ -43,7 +45,14 @@ export class YtPlayerService {
       this.player.loadVideoById(this.playerVideoId);
       this.videoItemToObserve.next(videoItem);
       this.isVideoBuffering = true;
+      this.setHistory(videoItem);
     }
+  }
+  private setHistory(item: Music) {
+    if (this.history[this.history.length - 1].videoId !== item.videoId) {
+      this.history.push(item); // to do: ograniczenie na wielkosc historii
+    }
+    this.httpService.setHistory(this.history);
   }
   getState(): Observable<{videoId: string, needBuffering: boolean}> {
     return this.state.asObservable();
@@ -73,7 +82,7 @@ export class YtPlayerService {
     this.fullScreen.next(true);
   }
 
-  constructor() {
+  constructor(private httpService: HttpService) {
     // 2. This code loads the IFrame Player API code asynchronously.
     const tag = document.createElement('script');
     tag.src = 'https://www.youtube.com/iframe_api';
@@ -82,6 +91,10 @@ export class YtPlayerService {
 
     // 3. This function creates an <iframe> (and YouTube player) after the API code downloads.
     window['onYouTubeIframeAPIReady'.toString()] = () => { this.APIReady('100%', '100%', this.playerVideoId); };
+
+    this.httpService.getHistory().subscribe((history) => {
+      this.history = JSON.parse(history.history);
+    });
   }
 
   private APIReady(playerHeight: string, playerWidth: string, playerVideoId: string) {
@@ -100,7 +113,7 @@ export class YtPlayerService {
   private onPlayerReady(event) {
     this.isPlayerLoaded = true;
     console.log('YtPlayerService done');
-    this.load(pinkPanter);
+    this.load(this.history[this.history.length - 1]);
     this.stop();
   }
   // 5. The API calls this function when the player's state changes like PLAYING, PAUSE, ENDED.
@@ -122,13 +135,3 @@ export class YtPlayerService {
     }
   }
 }
-
-const pinkPanter = {
-  title: 'Różowa pantera',
-  videoId: '5H7bNUFGMs0',
-  channelTitle: 'Szpaku',
-  thumbnails: 'https://i.ytimg.com/vi/lk70ee3UMAc/hqdefault.jpg',
-  date: null,
-  duration: 'T2M43S',
-  views: null
-};

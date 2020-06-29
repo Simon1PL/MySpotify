@@ -12,7 +12,15 @@ app.use(express.static(path.join(__dirname, '../dist/my-spotify')));
 require('./songs')(app, driver);
 require('./playlists')(app, driver);
 require('./playlist')(app, driver);
+require('./artists')(app, driver);
+require('./artist')(app, driver);
+require('./getHistory')(app, driver);
+require('./setHistory')(app, driver);
+require('./changeArtist')(app, driver);
 require('./addYTVideoToPlaylist')(app, driver);
+require('./songPlaylists')(app, driver);
+require('./setSong')(app, driver);
+require('./deleteYTVideoFromPlaylist')(app, driver);
 
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, '../dist/my-spotify/index.html'));

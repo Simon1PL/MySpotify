@@ -17,11 +17,15 @@ export class MainPageComponent implements OnInit {
   state = 'ended'; // loading/playing/ended (play button icon depends on that)
   watchVideo = false; // when true video is visible
   results: Music[] = [];
-  videoItem: Music = pinkPanter; // info about playing/loaded song
+  videoItem: Music; // info about playing/loaded song
   playlists: {name: string}[];
   currentPlaylist: Music[] = null; // bedzie dostawala informacje jesli zostanie puszczona muzyka
   hasNext = false;
   hasPrev = false;
+  add = false;
+  loadMore = false;
+  artists: {name: string}[] = null;
+  editing = false;
 
   private subscription: Subscription;
 
@@ -29,6 +33,9 @@ export class MainPageComponent implements OnInit {
   constructor(private ytPlayerService: YtPlayerService, private ytSearchService: YtSearchService, private httpService: HttpService) { }
 
   ngOnInit(): void {
+    this.httpService.getHistory().subscribe(history => {
+      this.videoItem = JSON.parse(history.history)[JSON.parse(history.history).length - 1];
+    });
     this.ytPlayerService.getState().subscribe(item => {
       // first option: if getState has item with videoId=null this song state=ended[play icon visible]
       // second: videoId!=null and video needs buffering(state=loading[loading icon visible])
@@ -40,7 +47,11 @@ export class MainPageComponent implements OnInit {
     });
     this.ytPlayerService.getCurrentlyPlayingVideoItem().subscribe(videoItem => this.videoItem = videoItem);
     this.subscription = this.httpService.getSongs().subscribe(result => this.results = result);
-    this.httpService.getPlaylists().subscribe(result => this.playlists = result);
+    this.httpService.getPlaylists().subscribe(result => {
+      const index = result.findIndex(i => i.name === 'favorite');
+      result.splice(index, 1);
+      this.playlists = result;
+    });
   }
 
   changeTheme(theme: string) {
@@ -63,6 +74,7 @@ export class MainPageComponent implements OnInit {
   }
 
   play(play = this.state === 'ended') { // argument play: true - start playing / false - stop playing
+    this.add = false;
     if (play) {
       this.ytPlayerService.play(this.currentPlaylist);
       this.startTimer();
@@ -71,7 +83,7 @@ export class MainPageComponent implements OnInit {
         this.hasPrev = false;
       }
       else {
-        const currentIndexInPlaylist = this.currentPlaylist.findIndex((music) => music.videoId === this.videoItem.videoId);
+        const currentIndexInPlaylist = this.currentPlaylist.findIndex(music => music.videoId === this.videoItem.videoId);
         this.hasNext = currentIndexInPlaylist === this.currentPlaylist.length - 1 ? false : true;
         this.hasPrev = currentIndexInPlaylist === 0 ? false : true;
       }
@@ -83,43 +95,71 @@ export class MainPageComponent implements OnInit {
   }
 
   search(text: string, token = false) {
+    this.loadMore = true;
     this.ytSearchService.search(text, token);
-    this.subscription.unsubscribe();
+    this.subscription?.unsubscribe();
     this.subscription = this.ytSearchService.getResultList().subscribe(result => this.results = result);
   }
 
   searchInSave(text: string) {
-    this.subscription.unsubscribe();
+    this.loadMore = false;
+    this.subscription?.unsubscribe();
     this.subscription = this.httpService.searchSongs(text).subscribe(songs => this.results = songs);
   }
 
   showPlaylist(playlist: string) {
-    this.subscription.unsubscribe();
-    this.subscription = this.httpService.getPlaylist(playlist).subscribe(songs => this.results = songs);
+    this.loadMore = false;
+    this.subscription?.unsubscribe();
+    this.subscription = this.httpService.getPlaylist(playlist).subscribe(songs => {
+      this.results = songs;
+      this.currentPlaylist = songs;
+    });
   }
 
-  @HostListener('document:keydown', ['$event'])
+  showHistory() {
+    this.loadMore = false;
+    this.subscription?.unsubscribe();
+    this.subscription = this.httpService.getHistory().subscribe(history => {
+      this.results = JSON.parse(history.history).reverse();
+    });
+  }
+
+  showArtist(artist: string) {
+    this.loadMore = false;
+    this.subscription?.unsubscribe();
+    this.subscription = this.httpService.getArtist(artist).subscribe(songs => {
+      this.results = songs;
+    });
+  }
+
+  @HostListener('document:keyup', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent) {
-    if (event.key === 'Enter')
-    {
-      const input = document.getElementById('search');
-      this.search((input as HTMLInputElement).value);
-    }
     if (event.key === ' ')
     {
       event.preventDefault();
       this.play();
     }
   }
+  @HostListener('document:keydown', ['$event'])
+  handleKeyboardEvent2(event: KeyboardEvent) {
+    if (event.key === ' ')
+    {
+      event.preventDefault();
+    }
+  }
 
   like() {
     this.videoItem.like = !this.videoItem.like;
-    this.httpService.addSong(this.videoItem, 'polskie');
-    // change in database and this.item
+    if (this.videoItem.like) {
+      this.httpService.addSong(this.videoItem, 'favorite');
+    }
+    else {
+      this.httpService.deleteSong(this.videoItem, 'favorite');
+    }
+    this.httpService.setSong(this.videoItem);
   }
 
   download(){
-    // change in database and this.item
   }
 
   toggleMenu() {
@@ -133,6 +173,49 @@ export class MainPageComponent implements OnInit {
   }
   closeVideo() {
     this.watchVideo = false;
+  }
+  onEvent(event) {
+    event.stopPropagation();
+    event.target.value += ' ';
+  }
+  addSpace(input) {
+    input += ' ';
+  }
+  next() {
+    const currentIndexInPlaylist = this.currentPlaylist.findIndex(music => music.videoId === this.videoItem.videoId);
+    if (currentIndexInPlaylist < this.currentPlaylist.length - 1) {
+      this.videoItem = this.currentPlaylist[currentIndexInPlaylist + 1];
+      this.ytPlayerService.load(this.videoItem);
+      this.play(true);
+    }
+  }
+
+  last() {
+    const currentIndexInPlaylist = this.currentPlaylist.findIndex(music => music.videoId === this.videoItem.videoId);
+    if (currentIndexInPlaylist > 0) {
+      this.videoItem = this.currentPlaylist[currentIndexInPlaylist - 1];
+      this.ytPlayerService.load(this.videoItem);
+      this.play(true);
+    }
+  }
+
+  showArtists() {
+    this.loadMore = false;
+    this.subscription?.unsubscribe();
+    this.results = null;
+    this.httpService.getArtists().subscribe(res => this.artists = res);
+  }
+
+  changeChannel(newTitle: string) {
+    this.videoItem.channelTitle = newTitle;
+    this.editing = false;
+    this.httpService.setSong(this.videoItem);
+    this.httpService.changeArtist(this.videoItem);
+  }
+
+  focus(el: any) {
+    this.editing = true;
+    setTimeout(() => el.focus(), 1);
   }
   /* this block view of elements which wouldn't work before YouTubeIframeAPIReady
     1) *ngIf="hasPlayerLoaded" - add this to element in html
@@ -148,16 +231,3 @@ export class MainPageComponent implements OnInit {
     } */
 
 }
-
-const pinkPanter = {
-  title: 'Różowa pantera',
-  videoId: '5H7bNUFGMs0',
-  channelTitle: 'Szpaku',
-  thumbnails: 'https://i.ytimg.com/vi/lk70ee3UMAc/hqdefault.jpg',
-  date: null,
-  duration: 'T2M43S',
-  views: null,
-  download: null,
-  like: false,
-  playlists: []
-};
