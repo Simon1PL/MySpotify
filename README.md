@@ -7,7 +7,7 @@ kod znajduje sie w folderze 'server', server można odpalić za pomocą komendy 
 przed odpaleniem servera należy zbudować projekt za pomocą komendy 'ng build --prod' co spowoduje powstanie plikow wynikowych w folderze dist, z ktorych bedzie korzystał server.
 ## 3.Baza danych
 Po stwoirzeniu bazy danych neo4j a jeszcze przed uruchomieniem programu stworzyłem 3 constrainty
-![constrainty screen](constrainty.png)
+![constrainty screen](constrainty.PNG)
 reszta działań na bazie danych jest jest wykonywana w aplikacji, wszystkie komendy są w odpowiednich plikach w folderze 'server'. Pliki:
 - addYTVideoToPlaylist.js obsluga metody post, dodaje Nody muzyki, playlisty do ktorej zostaje ona dodana oraz wykonawcy jeśli któryś nie istnieje. Następnie tworzy relacje między muzyką i playlistą oraz muzyką i wykonawcą.
 - artist.js metoda get, zwraca liste piosenek należących do artysty o podanym imieniu i nazwisku
