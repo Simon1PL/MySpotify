@@ -49,7 +49,7 @@ export class YtPlayerService {
     }
   }
   private setHistory(item: Music) {
-    if (this.history[this.history.length - 1].videoId !== item.videoId) {
+    if (this.history.length === 0 || this.history[this.history.length - 1].videoId !== item.videoId) {
       this.history.push(item); // to do: ograniczenie na wielkosc historii
     }
     this.httpService.setHistory(this.history);
