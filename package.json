@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "node .\\server\\server.js",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
@@ -25,7 +25,9 @@
     "neo4j-driver": "^4.0.2",
     "rxjs": "~6.5.4",
     "tslib": "^1.10.0",
-    "zone.js": "~0.10.2"
+    "zone.js": "~0.10.2",
+    "@angular/cli": "~9.1.7",
+    "@angular/compiler-cli": "~9.1.9"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.901.7",
