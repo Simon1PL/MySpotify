@@ -11,61 +11,61 @@ export class HttpService {
   constructor(private http: HttpClient) { }
 
   getSongs(): Observable<Music[]> {
-    return this.http.get<Music[]>('http://localhost:8080/songs');
+    return this.http.get<Music[]>('https://myspotify-app.herokuapp.com/songs');
   }
 
   searchSongs(text: string): Observable<Music[]> {
-    return this.http.get<Music[]>('http://localhost:8080/songs/' + text);
+    return this.http.get<Music[]>('https://myspotify-app.herokuapp.com/songs/' + text);
   }
 
   addSong(music: Music, playlistname: string) {
-    this.http.post<any>('http://localhost:8080/addYTVideoToPlaylist', { song: music, playlist: playlistname })
+    this.http.post<any>('https://myspotify-app.herokuapp.com/addYTVideoToPlaylist', { song: music, playlist: playlistname })
     .subscribe();
   }
 
   getPlaylists(videoId: string = null){
     if (videoId) {
-      return this.http.get<any[]>('http://localhost:8080/songPlaylists/' + videoId);
+      return this.http.get<any[]>('https://myspotify-app.herokuapp.com/songPlaylists/' + videoId);
     }
     else {
-      return this.http.get<any[]>('http://localhost:8080/playlists');
+      return this.http.get<any[]>('https://myspotify-app.herokuapp.com/playlists');
     }
   }
 
   getArtists(){
-    return this.http.get<any[]>('http://localhost:8080/artists');
+    return this.http.get<any[]>('https://myspotify-app.herokuapp.com/artists');
   }
 
   getArtist(artist: string){
-    return this.http.get<any[]>('http://localhost:8080/artist/' + artist);
+    return this.http.get<any[]>('https://myspotify-app.herokuapp.com/artist/' + artist);
   }
 
   getPlaylist(playlist: string){
-    return this.http.get<any[]>('http://localhost:8080/playlist/' + playlist);
+    return this.http.get<any[]>('https://myspotify-app.herokuapp.com/playlist/' + playlist);
   }
 
   setSong(song: Music){
-    this.http.post<any>('http://localhost:8080/setSong', { song })
+    this.http.post<any>('https://myspotify-app.herokuapp.com/setSong', { song })
     .subscribe();
   }
 
   deleteSong(music: Music, playlistname: string){
-    this.http.post<any>('http://localhost:8080/deleteYTVideoFromPlaylist', { song: music, playlist: playlistname })
+    this.http.post<any>('https://myspotify-app.herokuapp.com/deleteYTVideoFromPlaylist', { song: music, playlist: playlistname })
     .subscribe();
   }
 
   changeArtist(music: Music) {
-    this.http.post<any>('http://localhost:8080/changeArtist', { music })
+    this.http.post<any>('https://myspotify-app.herokuapp.com/changeArtist', { music })
     .subscribe();
   }
 
   getHistory(){
-    return this.http.get<any>('http://localhost:8080/getHistory');
+    return this.http.get<any>('https://myspotify-app.herokuapp.com/getHistory');
   }
 
   setHistory(historyArray: Music[]){
     const history = { history: JSON.stringify(historyArray) };
-    this.http.post<any>('http://localhost:8080/setHistory', { history })
+    this.http.post<any>('https://myspotify-app.herokuapp.com/setHistory', { history })
     .subscribe();
   }
 }
