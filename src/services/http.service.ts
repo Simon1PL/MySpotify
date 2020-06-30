@@ -11,7 +11,7 @@ export class HttpService {
   constructor(private http: HttpClient) { }
 
   getSongs(): Observable<Music[]> {
-    return this.http.get<Music[]>('https://myspotify-app.herokuapp.com/songs');
+    return this.http.get<Music[]>('https://myspotify-app.herokuapp.com/songs'); //http://localhost:8080
   }
 
   searchSongs(text: string): Observable<Music[]> {
