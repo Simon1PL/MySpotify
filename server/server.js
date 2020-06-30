@@ -3,7 +3,8 @@ const path = require('path');
 const neo4j = require('neo4j-driver');
 const driver = neo4j.driver(
     'bolt://hobby-fgmnaacjcnamgbkepkeibfel.dbs.graphenedb.com:24787',
-    neo4j.auth.basic('myspotify', 'b.0jAqt3mxh6BA.JAm8K82NiIoTnyyn')
+    neo4j.auth.basic('myspotify', 'b.0jAqt3mxh6BA.JAm8K82NiIoTnyyn'),
+    { encrypted : true}
 );
 
 const app = express();
