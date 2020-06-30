@@ -11,7 +11,7 @@ export class HttpService {
   constructor(private http: HttpClient) { }
 
   getSongs(): Observable<Music[]> {
-    return th    return this.http.get<Music[]>('https://myspotify-app.herokuapp.com/songs');
+    return this.http.get<Music[]>('https://myspotify-app.herokuapp.com/songs');
   }
 
   searchSongs(text: string): Observable<Music[]> {
@@ -65,4 +65,6 @@ export class HttpService {
 
   setHistory(historyArray: Music[]){
     const history = { history: JSON.stringify(historyArray) };
-    this.http.post<any>('https://myspotify-app.herokuapp.com/setHistory', { history })
+    this.http.post<any>('https://myspotify-app.herokuapp.com/setHistory', { history });
+  }
+}

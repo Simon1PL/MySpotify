@@ -233,6 +233,4 @@ const limit2 = {
     totalResults: 1,
     resultsPerPage: 1
   }
-};sultsPerPage: 1
-  }
 };
