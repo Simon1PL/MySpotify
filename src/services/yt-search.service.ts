@@ -24,7 +24,8 @@ export class YtSearchService {
   constructor(private httpService: HttpService) {
     window['gapi'.toString()]?.load('client:auth2', () => {
       window['gapi'.toString()].auth2.init({
-        client_id: '694429461676-6ka7t7f3rkmumih6agavc162a9eb7okj.apps.googleusercontent.com',
+        client_id: '559639076556-1tb7esmahomq1qg2m739jcaqe90ie05c.apps.googleusercontent.com',
+        /* '694429461676-6ka7t7f3rkmumih6agavc162a9eb7okj.apps.googleusercontent.com', */
         events: {
           onReady: this.loadClient()
         }
@@ -33,7 +34,7 @@ export class YtSearchService {
   }
 
   private loadClient() {
-    window['gapi'.toString()].client.setApiKey('AIzaSyDlKeUFJIuOtRvuKf7kuvvPAV3wZI0klgU');
+    window['gapi'.toString()].client.setApiKey('AIzaSyDZYT0lJQGSSr3MEUDP-klf2gllrpUs1YA'/* 'AIzaSyDlKeUFJIuOtRvuKf7kuvvPAV3wZI0klgU' */);
     return window['gapi'.toString()].client.load('https://www.googleapis.com/discovery/v1/apis/youtube/v3/rest')
       .then(() => { console.log('GAPI client loaded for API (YtSearchService ready)'); },
         (err) => { console.error('Error loading GAPI client for API', err); });
@@ -77,6 +78,7 @@ export class YtSearchService {
   // arguments: text - searched phrase, token - next page token
   // assigns to this.results first 5 search results, if token is true just add 5 more results
   async search(text: string, token: boolean) {
+    let error = false;
     if (text === '') { text = 'piosenki'; }
     this.setResultList();
     let searchResult: any;
@@ -100,9 +102,16 @@ export class YtSearchService {
     },
       (err) => {
         console.error('Execute error', err);
-        searchResult = limitBle;
+        if (!token) {
+          this.results = limitExceded;
+        }
+        else {
+          this.results = this.results.concat(limitExceded);
+        }
+        error = true;
+        this.nextPageToken = 'limitExceded';
       });
-
+    if (!error) {
     const length = this.results.length;
     if (token === false) { while (this.results.length) { this.results.pop(); } }
     searchResult.items.forEach(async (item, index) => {
@@ -114,8 +123,9 @@ export class YtSearchService {
         this.results[index] = (this.createMusic(item, videoDetail));
       }
     });
-    this.setResultList();
     this.nextPageToken = searchResult.nextPageToken;
+    }
+    this.setResultList();
   }
 
   private createMusic(item: any, details: { duration: string, views: number }): Music {
@@ -139,358 +149,59 @@ export class YtSearchService {
 }
 
 // to load date when limit is reached (YT api has limit to 100,000 request per day or sth like that)
-const limitBle = {
-  kind: 'youtube#searchListResponse',
-  etag: 'nOfJLGnFdGI4hZczUSjoMEvxaB0',
-  nextPageToken: 'CAoQAA',
-  regionCode: 'PL',
-  pageInfo: {
-    totalResults: 1000000,
-    resultsPerPage: 10
+const limitExceded = [
+  {channelTitle: 'Ziejsonek1',
+  date: new Date('2010-07-30T13:01:04Z'),
+  download: null,
+  duration: 'PT3M42S',
+  like: false,
+  playlists: [],
+  thumbnails: 'https://i.ytimg.com/vi/Qu_1c57gLH0/mqdefault.jpg',
+  title: 'Rotary - Lubiła Tańczyć',
+  videoId: 'Qu_1c57gLH0',
+  views: 35591826},
+  {channelTitle: 'santao111',
+  date: new Date('2008-02-26T16:08:20Z'),
+  download: null,
+  duration: 'PT3M41S',
+  like: false,
+  playlists: [],
+  thumbnails: 'https://i.ytimg.com/vi/vSv6w4tyQXs/mqdefault.jpg',
+  title: 'ROTARY - Na jednej z dzikich plaż',
+  videoId: 'vSv6w4tyQXs',
+  views: 2511816
   },
-  items: [
-    {
-      kind: 'youtube#searchResult',
-      etag: 'NtBXg4B4w0trK0tOBfAeFIBHHaY',
-      id: {
-        kind: 'youtube#video',
-        videoId: 'rtyfH-WXDRk'
-      },
-      snippet: {
-        publishedAt: '2020-05-01T15:07:13Z',
-        channelId: 'UClm3zvzYNqeVwpzFGsDUOkg',
-        title: 'Taco Hemingway #hot16challenge2',
-        description: 'Lekarzu, lekarko, pielęgniarzu, pielęgniarko; cały personelu medyczny — dziękujemy z całego serca. My, raperzyny, możemy pomóc tylko tak jak umiemy ...',
-        thumbnails: {
-          default: {
-            url: 'https://i.ytimg.com/vi/rtyfH-WXDRk/default.jpg',
-            width: 120,
-            height: 90
-          },
-          medium: {
-            url: 'https://i.ytimg.com/vi/rtyfH-WXDRk/mqdefault.jpg',
-            width: 320,
-            height: 180
-          },
-          high: {
-            url: 'https://i.ytimg.com/vi/rtyfH-WXDRk/hqdefault.jpg',
-            width: 480,
-            height: 360
-          }
-        },
-        channelTitle: 'Taco Hemingway',
-        liveBroadcastContent: 'none',
-        publishTime: '2020-05-01T15:07:13Z'
-      }
-    },
-    {
-      kind: 'youtube#searchResult',
-      etag: 'ts7o82DbP5N86ChAP0kghpTlWIk',
-      id: {
-        kind: 'youtube#video',
-        videoId: '3ah4t1P9yFA'
-      },
-      snippet: {
-        publishedAt: '2019-07-23T20:03:05Z',
-        channelId: 'UClm3zvzYNqeVwpzFGsDUOkg',
-        title: 'Taco Hemingway - W PIĄTKI LEŻĘ W WANNIE feat. Dawid Podsiadło (prod. Borucci)',
-        description: 'POCZTÓWKA Z WWA, LATO \'19 Oto kilka opowieści z Warszawy. Ode mnie, dla was. Niechaj umili wam to kolejne burzliwe lato. Utwór dostępny na platformach ...',
-        thumbnails: {
-          default: {
-            url: 'https://i.ytimg.com/vi/3ah4t1P9yFA/default.jpg',
-            width: 120,
-            height: 90
-          },
-          medium: {
-            url: 'https://i.ytimg.com/vi/3ah4t1P9yFA/mqdefault.jpg',
-            width: 320,
-            height: 180
-          },
-          high: {
-            url: 'https://i.ytimg.com/vi/3ah4t1P9yFA/hqdefault.jpg',
-            width: 480,
-            height: 360
-          }
-        },
-        channelTitle: 'Taco Hemingway',
-        liveBroadcastContent: 'none',
-        publishTime: '2019-07-23T20:03:05Z'
-      }
-    },
-    {
-      kind: 'youtube#searchResult',
-      etag: 'NcsMwpNUi5lJkp_vROSbvo8SU8w',
-      id: {
-        kind: 'youtube#video',
-        videoId: 'vuMiAmMdpdE'
-      },
-      snippet: {
-        publishedAt: '2020-05-04T22:52:30Z',
-        channelId: 'UClm3zvzYNqeVwpzFGsDUOkg',
-        title: 'TACONAFIDE #hot16challenge2',
-        description: 'Zbiórka: https://www.siepomaga.pl/hot16challenge bit: Urb rapik: @quebahombre & @tacohemingway realizacja, mix & master: Jan Kwapisz ...',
-        thumbnails: {
-          default: {
-            url: 'https://i.ytimg.com/vi/vuMiAmMdpdE/default.jpg',
-            width: 120,
-            height: 90
-          },
-          medium: {
-            url: 'https://i.ytimg.com/vi/vuMiAmMdpdE/mqdefault.jpg',
-            width: 320,
-            height: 180
-          },
-          high: {
-            url: 'https://i.ytimg.com/vi/vuMiAmMdpdE/hqdefault.jpg',
-            width: 480,
-            height: 360
-          }
-        },
-        channelTitle: 'Taco Hemingway',
-        liveBroadcastContent: 'none',
-        publishTime: '2020-05-04T22:52:30Z'
-      }
-    },
-    {
-      kind: 'youtube#searchResult',
-      etag: 'f679hGdZOjirYumy52378gVNjiU',
-      id: {
-        kind: 'youtube#video',
-        videoId: 'PCQs3vSJ6xA'
-      },
-      snippet: {
-        publishedAt: '2016-07-05T17:52:55Z',
-        channelId: 'UClm3zvzYNqeVwpzFGsDUOkg',
-        title: 'Taco Hemingway - &quot;Deszcz na betonie&quot; (prod. Rumak)',
-        description: 'Wideo: takie.pany (Tomasz Domański, Mikołaj Olizar-Zakrzewski), Łukasz Partyka Produkcja: Rumak Mastering: Eprom Sounds Studio Rap: Taco ...',
-        thumbnails: {
-          default: {
-            url: 'https://i.ytimg.com/vi/PCQs3vSJ6xA/default.jpg',
-            width: 120,
-            height: 90
-          },
-          medium: {
-            url: 'https://i.ytimg.com/vi/PCQs3vSJ6xA/mqdefault.jpg',
-            width: 320,
-            height: 180
-          },
-          high: {
-            url: 'https://i.ytimg.com/vi/PCQs3vSJ6xA/hqdefault.jpg',
-            width: 480,
-            height: 360
-          }
-        },
-        channelTitle: 'Taco Hemingway',
-        liveBroadcastContent: 'none',
-        publishTime: '2016-07-05T17:52:55Z'
-      }
-    },
-    {
-      kind: 'youtube#searchResult',
-      etag: 'FS84F4YfZGcpkfChV9Oa-NJ69y8',
-      id: {
-        kind: 'youtube#video',
-        videoId: 'O2wWRAW2Rhg'
-      },
-      snippet: {
-        publishedAt: '2019-07-23T20:04:03Z',
-        channelId: 'UClm3zvzYNqeVwpzFGsDUOkg',
-        title: 'Taco Hemingway - LECI NOWY FUTURE (prod. 2K &amp; Sergiusz)',
-        description: 'POCZTÓWKA Z WWA, LATO \'19 Oto kilka opowieści z Warszawy. Ode mnie, dla was. Niechaj umili wam to kolejne burzliwe lato. Utwór dostępny na platformach ...',
-        thumbnails: {
-          default: {
-            url: 'https://i.ytimg.com/vi/O2wWRAW2Rhg/default.jpg',
-            width: 120,
-            height: 90
-          },
-          medium: {
-            url: 'https://i.ytimg.com/vi/O2wWRAW2Rhg/mqdefault.jpg',
-            width: 320,
-            height: 180
-          },
-          high: {
-            url: 'https://i.ytimg.com/vi/O2wWRAW2Rhg/hqdefault.jpg',
-            width: 480,
-            height: 360
-          }
-        },
-        channelTitle: 'Taco Hemingway',
-        liveBroadcastContent: 'none',
-        publishTime: '2019-07-23T20:04:03Z'
-      }
-    },
-    {
-      kind: 'youtube#searchResult',
-      etag: 'zmtjUL7J6PkXCE9SCpUj_nb6b1k',
-      id: {
-        kind: 'youtube#video',
-        videoId: 'M0wiq9gk6KE'
-      },
-      snippet: {
-        publishedAt: '2020-06-08T20:26:03Z',
-        channelId: 'UCdi3RSAWq7-HwFqpGR8SJAQ',
-        title: 'Taco Hemingway - Zapach Perfum (SzUsty Blend REUPLOAD)',
-        description: 'Z tego, co widziałem, filmik spadł z kanału SzUstego, tak więc wrzucam go znowu, bo kawałek jest świetny. Teledysku niestety nie mam :/',
-        thumbnails: {
-          default: {
-            url: 'https://i.ytimg.com/vi/M0wiq9gk6KE/default.jpg',
-            width: 120,
-            height: 90
-          },
-          medium: {
-            url: 'https://i.ytimg.com/vi/M0wiq9gk6KE/mqdefault.jpg',
-            width: 320,
-            height: 180
-          },
-          high: {
-            url: 'https://i.ytimg.com/vi/M0wiq9gk6KE/hqdefault.jpg',
-            width: 480,
-            height: 360
-          }
-        },
-        channelTitle: 'Kacper Szczęsny',
-        liveBroadcastContent: 'none',
-        publishTime: '2020-06-08T20:26:03Z'
-      }
-    },
-    {
-      kind: 'youtube#searchResult',
-      etag: '9hs-WDQ3m4QAcjLuW5PQF__0zr0',
-      id: {
-        kind: 'youtube#video',
-        videoId: 'TKO8zmF98nI'
-      },
-      snippet: {
-        publishedAt: '2015-06-06T17:34:30Z',
-        channelId: 'UClm3zvzYNqeVwpzFGsDUOkg',
-        title: 'Taco Hemingway - &quot;6 zer&quot; (prod. Rumak)',
-        description: 'Zamów płytę: http://tacohemingway.com/preorder/ Tekst: http://genius.com/Taco-hemingway-6-zer-lyrics/ Animacje & montaż: Łukasz Partyka Kamera: Jonasz ...',
-        thumbnails: {
-          default: {
-            url: 'https://i.ytimg.com/vi/TKO8zmF98nI/default.jpg',
-            width: 120,
-            height: 90
-          },
-          medium: {
-            url: 'https://i.ytimg.com/vi/TKO8zmF98nI/mqdefault.jpg',
-            width: 320,
-            height: 180
-          },
-          high: {
-            url: 'https://i.ytimg.com/vi/TKO8zmF98nI/hqdefault.jpg',
-            width: 480,
-            height: 360
-          }
-        },
-        channelTitle: 'Taco Hemingway',
-        liveBroadcastContent: 'none',
-        publishTime: '2015-06-06T17:34:30Z'
-      }
-    },
-    {
-      kind: 'youtube#searchResult',
-      etag: 'WW4uhggc63ahjF5HTJR94Yo83kg',
-      id: {
-        kind: 'youtube#video',
-        videoId: 'lk70ee3UMAc'
-      },
-      snippet: {
-        publishedAt: '2018-07-12T18:09:38Z',
-        channelId: 'UClm3zvzYNqeVwpzFGsDUOkg',
-        title: 'Taco Hemingway - Fiji (prod. Borucci)',
-        description: '"CAFÉ BELGA" - drugi długogrający album w dorobku Taco Hemingwaya, wyprodukowany w całości przez Rumaka i Borucciego. Zamów/pobierz: ...',
-        thumbnails: {
-          default: {
-            url: 'https://i.ytimg.com/vi/lk70ee3UMAc/default.jpg',
-            width: 120,
-            height: 90
-          },
-          medium: {
-            url: 'https://i.ytimg.com/vi/lk70ee3UMAc/mqdefault.jpg',
-            width: 320,
-            height: 180
-          },
-          high: {
-            url: 'https://i.ytimg.com/vi/lk70ee3UMAc/hqdefault.jpg',
-            width: 480,
-            height: 360
-          }
-        },
-        channelTitle: 'Taco Hemingway',
-        liveBroadcastContent: 'none',
-        publishTime: '2018-07-12T18:09:38Z'
-      }
-    },
-    {
-      kind: 'youtube#searchResult',
-      etag: 'Hg-JOLmUd8smwHIhNqxIu1ceopc',
-      id: {
-        kind: 'youtube#video',
-        videoId: '0mITRbhgVCk'
-      },
-      snippet: {
-        publishedAt: '2017-07-30T21:28:53Z',
-        channelId: 'UClm3zvzYNqeVwpzFGsDUOkg',
-        title: 'Taco Hemingway - &quot;Tlen&quot; (prod. Rumak)',
-        description: 'Zamów/pobierz: http://www.tacohemingway.com Spotify: http://open.spotify.com/album/33loeuvtDJ4ptPJawMW6Le Mastering: Rafał Smoleń Nagrania: Jan ...',
-        thumbnails: {
-          default: {
-            url: 'https://i.ytimg.com/vi/0mITRbhgVCk/default.jpg',
-            width: 120,
-            height: 90
-          },
-          medium: {
-            url: 'https://i.ytimg.com/vi/0mITRbhgVCk/mqdefault.jpg',
-            width: 320,
-            height: 180
-          },
-          high: {
-            url: 'https://i.ytimg.com/vi/0mITRbhgVCk/hqdefault.jpg',
-            width: 480,
-            height: 360
-          }
-        },
-        channelTitle: 'Taco Hemingway',
-        liveBroadcastContent: 'none',
-        publishTime: '2017-07-30T21:28:53Z'
-      }
-    },
-    {
-      kind: 'youtube#searchResult',
-      etag: 'O3DfKcx-jULzsXLZQk3TLCuHQbw',
-      id: {
-        kind: 'youtube#video',
-        videoId: 'treilTnAA8c'
-      },
-      snippet: {
-        publishedAt: '2018-11-18T16:27:29Z',
-        channelId: 'UCRuCgABFXzVdtx9lzM8lR6w',
-        title: 'Taco Hemingway   Bardzo Proszę! SzUsty Blend prod  Nick Badza',
-        description: '',
-        thumbnails: {
-          default: {
-            url: 'https://i.ytimg.com/vi/treilTnAA8c/default.jpg',
-            width: 120,
-            height: 90
-          },
-          medium: {
-            url: 'https://i.ytimg.com/vi/treilTnAA8c/mqdefault.jpg',
-            width: 320,
-            height: 180
-          },
-          high: {
-            url: 'https://i.ytimg.com/vi/treilTnAA8c/hqdefault.jpg',
-            width: 480,
-            height: 360
-          }
-        },
-        channelTitle: 'wszystko.TV',
-        liveBroadcastContent: 'none',
-        publishTime: '2018-11-18T16:27:29Z'
-      }
-    }
-  ]
-};
+  {channelTitle: 'MyMusic',
+  date: new Date('2009-05-08T14:59:35Z'),
+  download: null,
+  duration: 'PT4M14S',
+  like: false,
+  playlists: [],
+  thumbnails: 'https://i.ytimg.com/vi/X_NfwMopzWM/mqdefault.jpg',
+  title: 'Rotary - Pomyśl o mnie jeden raz',
+  videoId: 'X_NfwMopzWM',
+  views: 227660},
+  {channelTitle: 'Rotary',
+  date: new Date('2020-06-20T14:45:00Z'),
+  download: null,
+  duration: 'PT1H58M30S',
+  like: false,
+  playlists: [],
+  thumbnails: 'https://i.ytimg.com/vi/NRQqlPbQdE0/mqdefault.jpg',
+  title: 'General Session 1 - Together, We Connect | 2020 Rotary Virtual Convention',
+  videoId: 'NRQqlPbQdE0',
+  views: 84096},
+  {channelTitle: 'AdamC3046',
+  date: new Date('2018-12-01T20:36:28Z'),
+  download: null,
+  duration: 'PT15M34S',
+  like: false,
+  playlists: [],
+  thumbnails: 'https://i.ytimg.com/vi/0OGsMvR2e28/mqdefault.jpg',
+  title: 'BEST-OF Rotary Sounds 2018!',
+  videoId: '0OGsMvR2e28',
+  views: 614188}
+];
 
 const limit2 = {
   kind: 'youtube#videoListResponse',
