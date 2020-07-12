@@ -1,6 +1,6 @@
 # MySpotify
 Biblioteka/odtwarzacz muzyki zrealizowany za pomocą angulara(frontend), grafowej bazy danych neo4j, node js, express js(backend) oraz api youtube(Youtube Api data v3 oraz YT iframe api)  
-link(jesli przez jakis czas jest nie uzywany, trzeba zaczekac az odapli się server oraz baza danych, około 30sec i odświweżyc stronę, ponieważ automatycznie się wyłącza): https://myspotify-app.herokuapp.com 
+link(jesli przez jakis czas jest nie uzywany, trzeba zaczekac az odapli się server oraz baza danych, około 30sec i odświweżyc stronę, ponieważ automatycznie się wyłącza): https://myspotify-app.herokuapp.com  
 wykonał: Szymon Zieliński  
 
 ## 1.Backend
