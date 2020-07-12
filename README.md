@@ -14,6 +14,7 @@ Węzły w bazie:
 - Artist - zawiera unikalną nazwę wykonawcy.
 - History - zawiera liste ostatnio puszczanych muzyk.
 - Playlist - zawiera unikalną nazwe playlisty (uwaga: w przypadku podzialu na uzytkownikow nalezy zmienic ustawienia bazy poniewarz nazwa playlisty bedzie unikalna tylko w ramach danego uzytkownika)  
+
 Relacje w bazie:
 - contains - relacja między playlistą a muzyka, oznacza, że dana muzyka znajduje się w playliście (ulubione utwory w bazie są zwykłą playlistą o nazwie favorite).
 - share - relacja między wykonawcą a jego muzyką. Oznacza, że dany wykonawca wrzucił na youtubea daną muzyke. Ponieważ jest to nazwa kanału na YT często nie zgadza się z prawdziwym wykonawcą dlatego dodałem możliwość zmiany wykonawc z poziomu aplikacji.
