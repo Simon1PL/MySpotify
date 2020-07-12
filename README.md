@@ -13,9 +13,9 @@ Węzły w bazie:
 - YTVideo - zawiera obiekt muzyki: tytuł, wykonawce, date dodania, ilosc wyswietlen, czas trwania, link do obrazka, videoID z którego tworzony jest link do muzyki, informacje czy jest polubiony(informacja ta jest na tyle często pobierana[przy kazdym wyswietleniu], że dałem ją bezpośrednio jako parametr muzyki, żeby nie trzeba było za każdym razem sprawdzac czy jest w polubionych w bazie).
 - Artist - zawiera unikalną nazwę wykonawcy.
 - History - zawiera liste ostatnio puszczanych muzyk.
-- Playlist - zawiera unikalną nazwe playlisty (uwaga: w przypadku podzialu na uzytkownikow nalezy zmienic ustawienia bazy poniewarz nazwa playlisty bedzie unikalna tylko w ramach danego uzytkownika)
+- Playlist - zawiera unikalną nazwe playlisty (uwaga: w przypadku podzialu na uzytkownikow nalezy zmienic ustawienia bazy poniewarz nazwa playlisty bedzie unikalna tylko w ramach danego uzytkownika)  
 Relacje w bazie:
-- contsins - relacja między playlistą a muzyka, oznacza, że dana muzyka znajduje się w playliście (ulubione utwory w bazie są zwykłą playlistą o nazwie favorite).
+- contains - relacja między playlistą a muzyka, oznacza, że dana muzyka znajduje się w playliście (ulubione utwory w bazie są zwykłą playlistą o nazwie favorite).
 - share - relacja między wykonawcą a jego muzyką. Oznacza, że dany wykonawca wrzucił na youtubea daną muzyke. Ponieważ jest to nazwa kanału na YT często nie zgadza się z prawdziwym wykonawcą dlatego dodałem możliwość zmiany wykonawc z poziomu aplikacji.
 ### Tworzenie:
 Po stwoirzeniu bazy danych neo4j a jeszcze przed uruchomieniem programu stworzyłem 3 constrainty
