@@ -2,7 +2,7 @@
 Biblioteka/odtwarzacz muzyki zrealizowany za pomocą angulara(frontend), grafowej bazy danych neo4j, node js, express js(backend) oraz api youtube(Youtube Api data v3 oraz YT iframe api)  
 
 ## link: https://myspotify-app.herokuapp.com 
-## Nie hostuje w tym momencie bazy do tej aplikacji, więc funkcjonalności są mocno ograniczone. Przy pierwszym odpaleniu strony musi wstać server na heroku(wyłącza się po jakimś czasie braku aktywności).
+### Nie hostuje w tym momencie bazy do tej aplikacji, więc funkcjonalności są mocno ograniczone. Przy pierwszym odpaleniu strony musi wstać server na heroku(wyłącza się po jakimś czasie braku aktywności).
 
 ## 0.Screen
 screen z wersji z już wyłączoną bazą
